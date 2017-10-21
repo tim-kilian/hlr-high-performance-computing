@@ -38,6 +38,11 @@ testfile2 testfile3
 j) ~/testdir$ rm testfile2 | ls
 testfile3
 
+which findet nur externe Anwendungen, es besitzt keine Informationen über
+aliase, builtins oder functions.
+Bei cd handelt es sich um ein shell builtin.
+   ~$ type cd
+cd is a shell builtin
 
 1.3)
 

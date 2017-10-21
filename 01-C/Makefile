@@ -1,16 +1,16 @@
-objects = map.o pointer.o
-executable = map pointer
+CC = gcc
+EXEC = map pointer
+OBJ = map.o pointer.o
 
-all: $(executable)
+all: $(EXEC)
 
 %: %.o
-	gcc -o $@ $<
+	$(CC) -o $@ $<
 
-%.o: %.c
-	gcc -c $<
-
-
+%.o: %c
+	$(CC) -c $<
 
 clean:
-		rm -f *.o
-		rm -f $(executable)
+	rm -f $(EXEC)
+	rm -f *.o
+	rm -f *~
