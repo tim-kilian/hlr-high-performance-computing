@@ -1,0 +1,28 @@
+Code-Zeile 13: function returns address of local variable
+
+Code-Zeile 28: unused variable 'mistake2_'
+
+Code-Zeile 37: Fehler bei der Allokation ueber Funktion mistake2()
+
+Code-Zeile 61: invalid pointer
+
+Code-Zeile 26: falsche Referenz [2]
+
+Code-Zeile 44: Speicher darf nicht in der Funktion selbst deallokiert werden.
+
+Code-Zeile 43: falsche Referenz [4]
+
+
+
+Programm stuerzt nicht mehr ab und die Ausgabe stimmt.
+Speicherfehler:
+
+Code-Zeile 26: zu wenig Speicherplatz allokiert fuer Array von 2 Integers
+
+Code-Zeile 12: Memory leak von mistake1(); Deallokation im Caller fehlt
+
+Code-Zeile 25: Memory leak von mistake2(); Deallokation im Caller fehlt
+
+Code-Zeile 34: Memory leak von mistake2() in Code-Zeile 25; Deallokation im Caller fehlt
+
+Code-Zeile 42: Memory leak von mistake4(); Deallokation im Caller fehlt
