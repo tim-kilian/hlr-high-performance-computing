@@ -1,0 +1,13 @@
+askparams.c:
+
+Code-Zeile 197: Argument von argV außerhalb der Grenzen
+
+
+
+partdiff-seq.c:
+
+Code-Zeile 96: Berechnung des Speicherplatzes fehlerhaft. (N+1)
+Code-Zeile 230: Reihenfolge der Argumente verdreht [m2]
+Code-Zeile 166: Bedingung if (Matrix != 0) fehlte
+Code-Zeile 323: Speicher der Matrix M wurde nicht deallokiert. In Funktion freeMatrices() eingefügt
+Code-Zeile 323: Reihenfolge der free()-Befehle stimmte nicht. 
