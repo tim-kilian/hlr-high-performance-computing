@@ -1,0 +1,109 @@
+Fehler 1:
+  GDB Output:
+    Program received signal SIGSEGV, Segmentation fault.
+    simple.c:24 : buf[0] = 3;
+
+  Warnung:
+    Zeile 22: unused variable 'mistake2_'
+
+  Änderung:
+    Zeile 22:
+      - int mistake2_ = 0;
+                                            + int mistake2 = 0;
+
+Fehler 2:
+  GDB Output:
+     Program received signal SIGSEGV, Segmentation fault.
+     simple.c:39 : printf("1 %d\n", *p[0]);
+
+  Warnung:
+    Zeile 11: function returns address of local variable
+
+  Änderung:
+    Zeile 10:
+     - int buf[] = { 1, 1, 2, 3, 4, 5 };
+                                            + int* buf = malloc(sizeof(int) * 6);
+                                            + buf[0] = 1;
+                                            + buf[1] = 1;
+                                            + buf[2] = 2;
+                                            + buf[3] = 3;
+                                            + buf[4] = 4;
+                                            + buf[5] = 5;
+
+Fehler 3:
+  GDB Output:
+    *** Error in `$PATH_TO_SIMPLE$/simple': free(): invalid pointer: 0x0000555555756284 ***
+    Program received signal SIGABRT, Aborted.
+    simple.c:46	: free(p[1]);
+
+  Änderung:
+    Zeile 46:
+      - free(p[1]);
+                                            +free(p[2]);
+
+Programm stürzt nicht mehr ab, jedoch stimmt die Ausgabe noch nicht.
+
+Fehler 4:
+  Fehlerart:
+    Zeile 16: Falsche Referenz buf[2]
+
+  Änderung:
+    Zeile 16:
+      - buf[2] = 2;
+                                            + buf[1] = 2;
+
+Fehler 5:
+  Fehlerart:
+      Zeile 23: Fehler bei der Allokation über Funktion mistake2()
+
+  Änderung:
+    Zeile 22:
+      - int mistake2_ = 0;
+      - int* buf = (int*) &mistake2;
+                                            + int *buf = mistake2();
+
+Fehler 6:
+  Fehlerart:
+    Zeile 31: Speicher darf nicht in der Funktion selbst deallokiert werden.
+
+  Änderung:
+    Zeile 31:
+      - free(buf);
+
+Fehler 7:
+  Fehlerart:
+      Zeile 30: Falsche Referenz buf[2]
+
+  Änderung:
+    Zeile 30:
+      - buf[4] = 4;
+                                            + buf[0] = 4;
+
+Programm stürzt nicht mehr ab und die Ausgabe stimmt.
+
+Speicherfehler 1:
+  Fehlerart:
+    Zeile 15: zu wenig Speicherplatz allokiert für Array von 2 Integers
+
+  Änderung:
+    Zeile 15:
+      - int* buf = malloc (sizeof(char) * 4);
+                                            + int *buf = malloc(sizeof(int) * 2);
+
+Speicherfehler 2:
+  Fehlerart:
+    Zeile 10: Memory leak von mistake1(); Deallokation im Caller fehlt
+
+  Änderung:
+    Zeile 47:
+      + free(--p[0]);
+
+Speicherfehler 3:
+  Fehlerart:
+    Zeile 29: Memory leak von mistake4(); Deallokation im Caller fehlt
+
+  Änderung:
+    Zeile 47:
+      + free(p[3]);
+
+// Zeilennummern beziehen sich alle auf simple.c.broken
