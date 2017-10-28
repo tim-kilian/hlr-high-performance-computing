@@ -48,6 +48,7 @@ int main(void) {
     // mhh muss hier noch etwas gefreed werden?
     // Fügen sie hier die korrekten aufrufe von free() ein
     free(--p[0]);
+    free(--p[1]);
     free(p[2]);         // welcher Pointer war das doch gleich?
     free(p[3]);
 
