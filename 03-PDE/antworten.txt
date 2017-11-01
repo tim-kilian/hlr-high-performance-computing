@@ -1,0 +1,73 @@
+Aufgabe 1 Batch Queuing
+
+1.
+Batch Queuing ist das Aneinanderreihen von Jobs.
+Jeder Job hat einen Prioritaetswert. Je hoeher der Wert, desto eher
+wird er ausgeführt (durch das Batch Queuing System)
+2.
+-(effizientes) Ausführen von Jobs
+-Kontrollieren von Jobs (durch Interface)
+-Zuweisung von Hardware (Knoten, CPU's, Speicher, GPU's)
+
+3.
+-Slurm
+-PRUN
+-Oracle Grid Engine
+
+4.
+Slurm
+
+5.
+-gibt Skript an Slurm weiter
+-dem Skript wird eine Job ID zugewiesen
+-das Skript wird ausgefuehrt, oder falls keine Ressourcen vorhanden sind kommt
+es in die Warteliste
+6.
+$ squeue zeigt alle laufenden und wartenden Jobs an. Unter dem Reiter ST
+wird der Status angezeigt.
+7. 
+sview hat eine grafische Oberflaeche die sich selbststaendig aktualisiert,
+so werden neue Jobs direkt angezeigt. Es koennen Jobs angehalten/fortgesetzt
+/veraendert, oder abgebrochen werden. Ausserdem bietet sview weitere Informationen
+ueber z.B. vorhandene Knoten und deren CPU Anzahl. 
+
+8.
+Ja z.B. ueber sview Rechtsklick auf den Job und dann "cancel" auswählen, oder
+$ scancel <jobid> für gezielten Abbruch/$ scancel -u <username> fuer Abbruch aller
+Jobs des Benutzers
+
+9. 
+Ja 
+
+10.
+$ scontrol show job <jobid>
+
+11.
+1. FIFO (First In First Out) Scheduler: Je nach Prioritaet werden Jobs sequenziell abgearbeitet
+2. Backfill Scheduler: Falls es den Start eines Jobs mit hoeherer Prioritaet nicht
+verschiebt, wird ein Job mit niedriger Prioritaet vorgezogen um vorhandene 
+Ressourcen besser auszunutzen. Paralleles ausfuehren von Jobs ist moeglich.
+
+12.
+salloc -N 1 -p west --exclude=west[1-6,8-10] srun hostname
+Output:
+salloc: Granted job allocation 34481
+west7
+salloc: Relinquishing job allocation 34481
+salloc: Job allocation 34481 has been revoked.
+
+
+13.
+
+14.
+squeue -o %p gibt Prioritaeten aller Jobs aus. Die default Ausgabe kann wie folgt um Prioritaeten erweitert werden
+squeue -o "%.18i %.9P %.8j %.8u %.2t %.10M %.6D %R %p"
+sprio gibt Prioritaeten fuer wartende Jobs aus mit -n kann normalisiert werden mit --jobs=65548,65547 koennen
+Ids spezifiziert werden
+
+15.
+salloc -p partition 	legt die Partition fest. Auf dem Cluster gibt es die Partitionen
+abu, amd, magny, nehalem, west, sandy - fuer sandy haben wir keine Rechte ;)
+
+
+Aufgabe 2 Paralleles Starten eines Shell-Scripts
