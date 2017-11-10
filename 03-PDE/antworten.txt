@@ -71,3 +71,20 @@ abu, amd, magny, nehalem, west, sandy - fuer sandy haben wir keine Rechte ;)
 
 
 Aufgabe 2 Paralleles Starten eines Shell-Scripts
+1.
+- die Reihefolge der Ausgaben ist meist unterschiedlich (oder durch Zufall gleich)
+	-> paralleles Starten eines Shell-Scripts ist nichtdeterministisch 
+Erklaerungsversuch:
+Die Prozesse werden parallel gestartet laufen also bis auf wenige Nanosekunden gleichzeitig. Anschließend greifen
+alle Prozesse auf den selben Speicher zu, um den Output zu schreiben. Ein gleichzeitiges Schreiben ist nicht moeglich ("Race Condition").
+Der Speicher muss fuer jeden Prozess wieder freigegeben werden. Die Auswahl des schreibberechtigten Prozesses durch den
+Memory Controller unterliegt offenbar keiner festen Reihenfolge.
+2.
+Im Skript kann ueber:
+./timescript >> timescript.out
+ein Output festgelegt werden. 
+Startet man das Skritp nun z.B. mit:
+srun -N4 -n16 -p west ./timescript 
+,oder das job skript, wird eine Datei mit timescript.out erzeugt, allerdings stehen nicht alle 16 Einträge in der Datei. Die Anzahl der
+Eintraege ist von Durchlauf zu Durchlauf unterschiedlich. Es ist also Moeglich den Output festzulegen, er wird aber nicht zuverlaessig 
+geschrieben. Vermutlich liegt das am simultanen Zugriff auf den Speicher.

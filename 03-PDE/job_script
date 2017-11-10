@@ -1,0 +1,14 @@
+#!/bin/bash -l
+
+#SBATCH --nodes=4		#Anzahl der Knoten (-N)
+#SBATCH --partition=west	
+#SBATCH --ntasks=16 		#vier Prozesse pro Knoten(-n)
+#SBATCH --job-name="time-t"
+#SBATCH --open-mode=append
+#SBATCH --output=timescript.out
+
+
+srun ./timescript
+echo '--------------------------'
+echo "fertig" > job_script.out
+
