@@ -232,8 +232,8 @@ calculate (struct calculation_arguments* arguments, struct calculation_results *
 			{
 				star = -Matrix[m2][i-1][j] - Matrix[m2][i][j-1] - Matrix[m2][i][j+1] - Matrix[m2][i+1][j] + 4.0 * Matrix[m2][i][j];
 
-				residuum = getResiduum(arguments, options, i, j, star); /* residuum = ((-star)/4.0); spart ca 1.7 sec ohne compiler optimierung */
-				korrektur = residuum;
+				residuum = getResiduum(arguments, options, i, j, star); /*residuum = ((-star)/4.0); spart ca 1.7 sec ohne compiler optimierung */
+				korrektur = residuum;					/* dann funktioniert aber natuerlich Gauss Seidel nicht */
 				residuum = (residuum < 0) ? -residuum : residuum;
 				maxresiduum = (residuum < maxresiduum) ? maxresiduum : residuum;
 

@@ -8,7 +8,6 @@ Man kann sehen, dass die calculate Funktion mit Abstand am meisten Zeit bean-
 sprucht, gefolgt von getResiduum, die aber schon, je nach Optimierungsgrad,
 einen erheblich kleineren Anteil an der Gesamtlaufzeit einnimmt. Die restli-
 chen Funktionen sind fuer die Laufzeit unbedeutend.
-
 -----------------------------------------------------------------------------
 Ausgabe von perf stat ./partdiff-seq 1 2 64 1 2 10240
 perf stat listet vor allem (aber nicht nur) hardware spezifische Statistiken. 
