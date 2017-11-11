@@ -4,10 +4,21 @@ In den restlichen Zeilen jeweils ein X in der zutreffenden Spalte setzen.
 Bearbeitungszeit:  
 Schwierigkeit:     [ ] zu leicht         [X] genau richtig     [ ] zu schwer
 Lehrreich:         [ ] wenig             [ ] etwas             [X] sehr
-Verständlichkeit:  [X] großteils unklar  [ ] teilweise unklar  [ ] verständlich
+Verständlichkeit:  [ ] großteils unklar  [ ] teilweise unklar  [X] verständlich
 
 Kommentar:
 Zeitaufwand zu groß? Wo sind Sie nicht weiter gekommen?
+
+    Aufgaben waren angenehm.
+
 Was war zu schwer oder unverständlich?
+
+    Unverständlich wie es abgegeben werden soll.
+
 Was könnten wir verbessern?
+
+    Bei der Abgabe der Dateien auch Ordner zulassen.
+
 Was hat Ihnen besonders gut gefallen?
+
+    Einführung in valgrind und gdb.

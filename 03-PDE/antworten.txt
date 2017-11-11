@@ -2,89 +2,123 @@ Aufgabe 1 Batch Queuing
 
 1.
 Batch Queuing ist das Aneinanderreihen von Jobs.
-Jeder Job hat einen Prioritaetswert. Je hoeher der Wert, desto eher
-wird er ausgeführt (durch das Batch Queuing System)
+Jeder Job hat einen Prioritätswert. Je höher der Wert, desto eher
+wird er durch das Batch Queuing System ausgeführt.
+
 2.
--(effizientes) Ausführen von Jobs
--Kontrollieren von Jobs (durch Interface)
--Zuweisung von Hardware (Knoten, CPU's, Speicher, GPU's)
+- (effizientes) Ausführen von Jobs
+- Kontrollieren von Jobs (durch Interface)
+- Zuweisung von Hardware (Knoten, CPU's, Speicher, GPU's)
 
 3.
--Slurm
--PRUN
--Oracle Grid Engine
+- Slurm
+- PRUN
+- Oracle Grid Engine
 
 4.
 Slurm
 
 5.
--gibt Skript an Slurm weiter
--dem Skript wird eine Job ID zugewiesen
--das Skript wird ausgefuehrt, oder falls keine Ressourcen vorhanden sind kommt
-es in die Warteliste
+- gibt ein Script an Slurm weiter
+- dem Script wird eine Job ID zugewiesen
+- falls keine Ressourcen vorhanden sind kommt das Script in eine Warteschlange, ansonsten wird es ausgeführt
+
 6.
-$ squeue zeigt alle laufenden und wartenden Jobs an. Unter dem Reiter ST
-wird der Status angezeigt.
+$ squeue
+zeigt alle laufenden und wartenden Jobs an.
+Unter dem Reiter ST wird der Status angezeigt.
+
 7. 
-sview hat eine grafische Oberflaeche die sich selbststaendig aktualisiert,
-so werden neue Jobs direkt angezeigt. Es koennen Jobs angehalten/fortgesetzt
-/veraendert, oder abgebrochen werden. Ausserdem bietet sview weitere Informationen
-ueber z.B. vorhandene Knoten und deren CPU Anzahl. 
+sview ist eine grafische Oberfläche, die sich selbstständig aktualisiert.
+Neue Jobs werden direkt angezeigt.
+Jobs können angehalten, fortgesetzt, verändert, oder abgebrochen werden.
+Außerdem bietet sview weitere Informationen
+über z.B. vorhandene Knoten und deren CPU Anzahl.
 
 8.
-Ja z.B. ueber sview Rechtsklick auf den Job und dann "cancel" auswählen, oder
-$ scancel <jobid> für gezielten Abbruch/$ scancel -u <username> fuer Abbruch aller
-Jobs des Benutzers
+Ja z.B. über sview Rechtsklick auf den Job und dann "cancel" auswählen.
+Des weiteren führt
+$ scancel <jobid>
+zu einem gezielten Abbruch oder
+$ scancel -u <username>
+zu einem Abbruch aller Jobs des Benutzers.
 
-9. 
-Ja 
+9.
+Ja.
 
 10.
 $ scontrol show job <jobid>
 
 11.
-1. FIFO (First In First Out) Scheduler: Je nach Prioritaet werden Jobs sequenziell abgearbeitet
-2. Backfill Scheduler: Falls es den Start eines Jobs mit hoeherer Prioritaet nicht
-verschiebt, wird ein Job mit niedriger Prioritaet vorgezogen um vorhandene 
-Ressourcen besser auszunutzen. Paralleles ausfuehren von Jobs ist moeglich.
+1. FIFO (First In First Out) Scheduler: Je nach Priorität werden Jobs sequenziell abgearbeitet
+2. Backfill Scheduler: Falls es den Start eines Jobs mit höherer Priorität nicht
+verschiebt, wird ein Job mit niedriger Priorität vorgezogen um vorhandene
+Ressourcen besser auszunutzen. Paralleles ausführen von Jobs ist möglich.
 
 12.
-salloc -N 1 -p west --exclude=west[1-6,8-10] srun hostname
+$ salloc -N 1 -p west --exclude=west[1-6,8-10] srun hostname
 Output:
-salloc: Granted job allocation 34481
-west7
-salloc: Relinquishing job allocation 34481
-salloc: Job allocation 34481 has been revoked.
-
+  salloc: Granted job allocation 34481
+  west7
+  salloc: Relinquishing job allocation 34481
+  salloc: Job allocation 34481 has been revoked.
 
 13.
+$ sinfo
+PARTITION AVAIL  TIMELIMIT  NODES  STATE NODELIST
+abu          up    6:00:00      4  down* abu[1-4]
+abu          up    6:00:00      1   idle abu5
+amd          up    6:00:00      5   idle amd[1-5]
+magny        up    6:00:00      1  alloc magny1
+nehalem      up    6:00:00      1   idle nehalem5
+west         up    6:00:00      2  alloc west[1-2]
+west         up    6:00:00      8   idle west[3-10]
+
+$ sinfo -o %l
+TIMELIMIT
+6:00:00
 
 14.
-squeue -o %p gibt Prioritaeten aller Jobs aus. Die default Ausgabe kann wie folgt um Prioritaeten erweitert werden
-squeue -o "%.18i %.9P %.8j %.8u %.2t %.10M %.6D %R %p"
-sprio gibt Prioritaeten fuer wartende Jobs aus mit -n kann normalisiert werden mit --jobs=65548,65547 koennen
-Ids spezifiziert werden
+$ squeue -o %p
+gibt Prioritäten aller Jobs aus.
+Die default Ausgabe kann wie folgt um Prioritäten erweitert werden
+$ squeue -o "%.18i %.9P %.8j %.8u %.2t %.10M %.6D %R %p"
+$ sprio
+gibt Prioritäten für wartende Jobs aus mit -n kann normalisiert werden
+mit --jobs=65548,65547 können Ids spezifiziert werden
 
 15.
-salloc -p partition 	legt die Partition fest. Auf dem Cluster gibt es die Partitionen
-abu, amd, magny, nehalem, west, sandy - fuer sandy haben wir keine Rechte ;)
+$ salloc -p partition
+legt die Partition fest. Auf dem Cluster gibt es die Partitionen
+abu, amd, magny, nehalem, west, sandy - für sandy haben wir keine Rechte ;)
 
 
 Aufgabe 2 Paralleles Starten eines Shell-Scripts
-1.
-- die Reihefolge der Ausgaben ist meist unterschiedlich (oder durch Zufall gleich)
-	-> paralleles Starten eines Shell-Scripts ist nichtdeterministisch 
-Erklaerungsversuch:
+
+Frage: Was fällt Ihnen auf? Versuchen Sie Ihre Beobachtung zu erklären!
+
+ - die Reihefolge der Ausgaben ist meist unterschiedlich (oder durch Zufall gleich)
+   -> paralleles Starten eines Shell-Scripts ist nichtdeterministisch
+Erklärungsversuch:
 Die Prozesse werden parallel gestartet laufen also bis auf wenige Nanosekunden gleichzeitig. Anschließend greifen
-alle Prozesse auf den selben Speicher zu, um den Output zu schreiben. Ein gleichzeitiges Schreiben ist nicht moeglich ("Race Condition").
-Der Speicher muss fuer jeden Prozess wieder freigegeben werden. Die Auswahl des schreibberechtigten Prozesses durch den
+alle Prozesse auf den selben Speicher zu, um den Output zu schreiben. Ein gleichzeitiges Schreiben ist nicht möglich ("Race Condition").
+Der Speicher muss für jeden Prozess wieder freigegeben werden. Die Auswahl des schreibberechtigten Prozesses durch den
 Memory Controller unterliegt offenbar keiner festen Reihenfolge.
-2.
-Im Skript kann ueber:
-./timescript >> timescript.out
+
+Frage: Könnte man die Datei timescript.out auch innerhalb des Scriptes timescript erzeugen?
+Falls ja: Wie? Falls nein: Warum nicht?
+
+Das timescript.out kann durch ein echo -n '' innerhalb des Skriptes erzeugt werden
+und dementsprechend gefüllt werden.
+Jedoch ist dies nicht sehr sinnvoll, da die Output-Datei
+durch ständige Schreibaufrufe innerhalb von timescript blockiert wird.
+Im Script kann über:
+./timescript.sh >> timescript.out
 ein Output festgelegt werden. 
 Startet man das Skritp nun z.B. mit:
 srun -N4 -n16 -p west ./timescript 
-,oder das job skript, wird eine Datei mit timescript.out erzeugt, allerdings stehen nicht alle 16 Einträge in der Datei. Die Anzahl der
-Eintraege ist von Durchlauf zu Durchlauf unterschiedlich. Es ist also Moeglich den Output festzulegen, er wird aber nicht zuverlaessig 
+,oder das job script, wird eine Datei mit timescript.out erzeugt,
+allerdings stehen nicht alle 16 Einträge in der Datei. Die Anzahl der
+Einträge ist von Durchlauf zu Durchlauf unterschiedlich.
+Es ist also Möglich den Output festzulegen, er wird aber nicht zuverlässig
 geschrieben. Vermutlich liegt das am simultanen Zugriff auf den Speicher.

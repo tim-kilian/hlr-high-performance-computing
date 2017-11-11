@@ -1,6 +1,0 @@
-#!//bin/bash
-hostn="$(hostname)"
-stamp="$(date +%s%N)"
-
-echo "$hostn: $stamp"
-

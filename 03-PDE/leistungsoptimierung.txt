@@ -10,11 +10,11 @@ einen erheblich kleineren Anteil an der Gesamtlaufzeit einnimmt. Die restli-
 chen Funktionen sind fuer die Laufzeit unbedeutend.
 -----------------------------------------------------------------------------
 Ausgabe von perf stat ./partdiff-seq 1 2 64 1 2 10240
-perf stat listet vor allem (aber nicht nur) hardware spezifische Statistiken. 
+perf stat listet vor allem (aber nicht nur) hardware spezifische Statistiken.
 Im folgenden sind Statistiken + Bedeutung aufgelistet:
 
 task clock:
-Laufzeit des Programmes in Millisekunden 
+Laufzeit des Programmes in Millisekunden
 
 context-switches:
 Anzahl der Unterbrechungen des aktuellen Prozesses
@@ -40,9 +40,9 @@ Warum in unserem Fall 0 ausgegeben wird, weiss ich nicht.
 stalled cycles frontend/backend:
 stalled (verzoegerte) Zyklen sind CPU-Zyklen in denen der Prozessor auf etwas wartet.
 Z.B. Speicher in denen die naechsten Befehle stehen.
-Das Frontend ist dabei fuer das Laden und Dekodieren von Befehlen, das Backend fuer 
+Das Frontend ist dabei fuer das Laden und Dekodieren von Befehlen, das Backend fuer
 das Ausfuehren von Befehlen zustaendig.
-Zwischen Front und Backend werden Daten temporaer zwischengespeichert, weshalb das 
+Zwischen Front und Backend werden Daten temporaer zwischengespeichert, weshalb das
 Backend haefig noch Arbeiten kann, waehrend das Frontend wartet.
 
 Instructions:
@@ -53,22 +53,23 @@ branches:
 Sequenz von Instruktionen
 
 branch misses:
-die CPU versucht kommende Instruktionssequenzen zu "erraten" um Laufzeiten zu 
+die CPU versucht kommende Instruktionssequenzen zu "erraten" um Laufzeiten zu
 verringern. Jedes falsche Raten hat einen branch miss zur Folge.
 
 
-In unserem 
+In unserem
 Optimierungsbeispiel ist vor allem deutlich zu erkennen, dass durch das Ver-
 tauschen der Indices die stalled cycles im front- und backend stark abnehmen.
 Die CPU muss also weniger auf den Speicher warten, was das Programm schneller
 macht.
-Ohne Compileroptimierung steigen vor allem die von der CPU ausgefuehrten 
-Instruktionen, bzw. branches, was das Programm verlangsamt. 
+Ohne Compileroptimierung steigen vor allem die von der CPU ausgefuehrten
+Instruktionen, bzw. branches, was das Programm verlangsamt.
 
- 
+
 Es folgen ein paar Tabellen die jeweils eine nicht optimierte Version mit einer
 optimierten Version des Programms vergleicht. Außerdem ist je einmal der Compiler
 Zusatz -O2 zugeschaltet.
+
 
 Instructions:
   |Unveraendert   |Indices        |
@@ -102,52 +103,52 @@ Detaillierte Auflistung der Ausgabe des perf stat Befehls:
 
  Performance counter stats for './partdiff-seq 2 2 64 1 2 10240':
 
-      11239.331354      task-clock (msec)         #    0.998 CPUs utilized          
-               114      context-switches          #    0.010 K/sec                  
-                 0      cpu-migrations            #    0.000 K/sec                  
-             1,120      page-faults               #    0.100 K/sec                  
-                 0      cycles                    #    0.000 GHz                    
-     8,523,471,710      stalled-cycles-frontend   #    0.00% frontend cycles idle   
-     1,443,147,819      stalled-cycles-backend    #    0.00% backend  cycles idle   
-    66,322,775,595      instructions                                                
+      11239.331354      task-clock (msec)         #    0.998 CPUs utilized
+               114      context-switches          #    0.010 K/sec
+                 0      cpu-migrations            #    0.000 K/sec
+             1,120      page-faults               #    0.100 K/sec
+                 0      cycles                    #    0.000 GHz
+     8,523,471,710      stalled-cycles-frontend   #    0.00% frontend cycles idle
+     1,443,147,819      stalled-cycles-backend    #    0.00% backend  cycles idle
+    66,322,775,595      instructions
                                                   #    0.13  stalled cycles per insn
-    11,048,121,369      branches                  #  982.987 M/sec                  
-         5,469,386      branch-misses             #    0.05% of all branches        
+    11,048,121,369      branches                  #  982.987 M/sec
+         5,469,386      branch-misses             #    0.05% of all branches
 
       11.259698749 seconds time elapsed
- 
+
 -O0, vertauschte Indices
 
  Performance counter stats for './partdiff-seq 1 2 64 1 2 10240':
 
-      84925.249936      task-clock (msec)         #    1.000 CPUs utilized          
-                64      context-switches          #    0.001 K/sec                  
-                 0      cpu-migrations            #    0.000 K/sec                  
-             1,120      page-faults               #    0.013 K/sec                  
-                 0      cycles                    #    0.000 GHz                    
-   109,898,843,804      stalled-cycles-frontend   #    0.00% frontend cycles idle   
-     7,211,708,874      stalled-cycles-backend    #    0.00% backend  cycles idle   
-   482,829,035,058      instructions                                                
+      84925.249936      task-clock (msec)         #    1.000 CPUs utilized
+                64      context-switches          #    0.001 K/sec
+                 0      cpu-migrations            #    0.000 K/sec
+             1,120      page-faults               #    0.013 K/sec
+                 0      cycles                    #    0.000 GHz
+   109,898,843,804      stalled-cycles-frontend   #    0.00% frontend cycles idle
+     7,211,708,874      stalled-cycles-backend    #    0.00% backend  cycles idle
+   482,829,035,058      instructions
                                                   #    0.23  stalled cycles per insn
-    22,088,978,905      branches                  #  260.099 M/sec                  
-         7,300,646      branch-misses             #    0.03% of all branches        
+    22,088,978,905      branches                  #  260.099 M/sec
+         7,300,646      branch-misses             #    0.03% of all branches
 
       84.942040129 seconds time elapsed
 
 -O2, ohne Optimierung
  Performance counter stats for './partdiff-seq 1 2 64 1 2 10240':
 
-      91688.754452      task-clock (msec)         #    0.999 CPUs utilized          
-               406      context-switches          #    0.004 K/sec                  
-                 0      cpu-migrations            #    0.000 K/sec                  
-             1,121      page-faults               #    0.012 K/sec                  
-                 0      cycles                    #    0.000 GHz                    
-   232,460,285,447      stalled-cycles-frontend   #    0.00% frontend cycles idle   
-   197,019,027,066      stalled-cycles-backend    #    0.00% backend  cycles idle   
-    77,405,622,157      instructions                                                
+      91688.754452      task-clock (msec)         #    0.999 CPUs utilized
+               406      context-switches          #    0.004 K/sec
+                 0      cpu-migrations            #    0.000 K/sec
+             1,121      page-faults               #    0.012 K/sec
+                 0      cycles                    #    0.000 GHz
+   232,460,285,447      stalled-cycles-frontend   #    0.00% frontend cycles idle
+   197,019,027,066      stalled-cycles-backend    #    0.00% backend  cycles idle
+    77,405,622,157      instructions
                                                   #    3.00  stalled cycles per insn
-    11,061,068,834      branches                  #  120.637 M/sec                  
-         5,997,393      branch-misses             #    0.05% of all branches        
+    11,061,068,834      branches                  #  120.637 M/sec
+         5,997,393      branch-misses             #    0.05% of all branches
 
       91.738396663 seconds time elapsed
 
@@ -155,24 +156,24 @@ Detaillierte Auflistung der Ausgabe des perf stat Befehls:
 
  Performance counter stats for './partdiff-seq 1 2 64 1 2 10240':
 
-     155479.606225      task-clock (msec)         #    0.999 CPUs utilized          
-             1,135      context-switches          #    0.007 K/sec                  
-                 0      cpu-migrations            #    0.000 K/sec                  
-             1,120      page-faults               #    0.007 K/sec                  
-                 0      cycles                    #    0.000 GHz                    
-   313,654,719,975      stalled-cycles-frontend   #    0.00% frontend cycles idle   
-   130,774,693,857      stalled-cycles-backend    #    0.00% backend  cycles idle   
-   482,900,868,682      instructions                                                
+     155479.606225      task-clock (msec)         #    0.999 CPUs utilized
+             1,135      context-switches          #    0.007 K/sec
+                 0      cpu-migrations            #    0.000 K/sec
+             1,120      page-faults               #    0.007 K/sec
+                 0      cycles                    #    0.000 GHz
+   313,654,719,975      stalled-cycles-frontend   #    0.00% frontend cycles idle
+   130,774,693,857      stalled-cycles-backend    #    0.00% backend  cycles idle
+   482,900,868,682      instructions
                                                   #    0.65  stalled cycles per insn
-    22,102,022,494      branches                  #  142.154 M/sec                  
-        10,495,907      branch-misses             #    0.05% of all branches        
+    22,102,022,494      branches                  #  142.154 M/sec
+        10,495,907      branch-misses             #    0.05% of all branches
 
      155.666879126 seconds time elapsed
 
 
 -----------------------------------------------------------------------------
 Leistungsvergleich
-Alle Zeiten variieren leicht bei selben Einstellungen (ca. +- 1.5s)  
+Alle Zeiten variieren leicht bei selben Einstellungen (ca. +- 1.5s)
 "time ./partdiff-seq 1 2 64 1 2 10240" wurde zum Testen verwendet
 1 (number of threads)
 2 (Method = Jacobi)
@@ -191,48 +192,84 @@ O2|112.441s     |12.188s        |
 O3|123.992s     |12.368s        |
 --------------------------------|
 
-Detailliert mit Ausgabe des time Befehls
-1. Unveraendertes Programm, keine Compileroptimierung
-Berechnungszeit:    156.969201 s 
-real	2m36.984s
-user	2m36.936s
-sys	0m0.016s
-2. -O1
-Berechnungszeit:    132.352413 s 
-real	2m12.379s
-user	2m12.204s
-sys	0m0.128s
-3. -O2
-Berechnungszeit:    112.440812 s 
-real	1m52.451s
-user	1m52.376s
-sys	0m0.008s
-4. -O3
-Berechnungszeit:    123.991922 s 
-real	2m4.003s
-user	2m3.988s
-sys	0m0.008s
-5. Indices vertauscht, keine Compileroptimierung
-Berechnungszeit:    84.668665 s 
-real	1m24.683s
-user	1m24.644s
-sys	0m0.008s
-6. Indices vertauscht, -O1
-Berechnungszeit:    27.055941 s 
-real	0m27.069s
-user	0m27.044s
-sys	0m0.008s
-7. Indices vertauscht, -O2
-Berechnungszeit:    12.187477 s 
-real	0m12.227s
-user	0m12.188s
-sys	0m0.032s
-8.Indices vertauscht, -O3
-Berechnungszeit:    12.367686 s 
-real	0m12.387s
-user	0m12.368s
-sys	0m0.016s
+Ausführung ohne Verbesserungen:
+$ time ./partdiff-seq 1 2 64 1 2 10240
+real	3m33.883s
+user	3m33.876s
+sys	    0m0.004s
 
+1.)
+Compiler flags um das -Ofast Flag ergänzt.
+
+Ausführung mit dem -O1 flag:
+$ time ./partdiff-seq 1 2 64 1 2 10240
+real	2m9.734s
+user	2m9.720s
+sys	    0m0.008s
+
+Ausführung mit dem -O2 flag:
+$ time ./partdiff-seq 1 2 64 1 2 10240
+real	1m57.101s
+user	1m57.088s
+sys	    0m0.004s
+
+Ausführung mit dem -O3 flag:
+$ time ./partdiff-seq 1 2 64 1 2 10240
+real	1m39.554s
+user	1m39.548s
+sys	    0m0.000s
+
+Ausführung mit dem -Ofast flag:
+$ time ./partdiff-seq 1 2 64 1 2 10240
+real	1m39.286s
+user	1m39.208s
+sys	    0m0.016s
+
+2.)
+
+index % time    self  children    called            name
+-----------------------------------------------
+              145.45    6.65       1/1              main [1]
+[2]     99.7  145.45    6.65       1                calculate [2]
+                6.65    0.00 2758256640/2758256640  getResiduum [3]
+-----------------------------------------------
+                6.65    0.00 2758256640/2758256640  calculate [2]
+[3]      4.4    6.65    0.00 2758256640             getResiduum [3]
+-----------------------------------------------
+getResiduum wird sehr häufig aufgerufen.
+
+3.)
 Optimierungen:
 in calculate sind die indices  i und j so gewaehlt, dass sie unvorteilhaft
 in den Cache geladen werden  -> vertauschen erhoeht geschwindigkeit erheblich
+Die for-Schleife umgedreht um den Speicherzugriff zu optimieren.
+
+for (int i = 1; i < arguments->N; i++) {
+    for (int j = 1; j < arguments->N; j++) {
+        // Matrix[m1][i][j]
+    }
+}
+
+Ausführung mit gedrehter for-Anweisung:
+$ time ./partdiff-seq 1 2 64 1 2 10240
+real	1m55.298s
+user	1m55.268s
+sys	    0m0.008s
+
+Ausführung mit gedrehter for-Anweisung und Compiler flag -Ofast:
+$ time ./partdiff-seq 1 2 64 1 2 10240
+real	0m4.893s
+user	0m4.868s
+sys	    0m0.000s
+
+4.)
+Man kann die jacobi Methode "zwingen" schneller zu konvergieren.
+Das nennt sich Overrelaxation. Dabei wird glaub ich der Korrekturfaktor
+um einen konstanten Wert skaliert (z.B.: 1.1). Dadurch nähert man sich
+schneller dem tatsächlichen Ergebnis. Aber es ist natürlich auch riskant
+wegen der Konvergenz
+
+
+5.)
+Das Entfernen unnötiger Variablen verbessert nicht die Ausführungsgeschwindigkeit,
+jedoch die Lesbarkeit des Programms.
