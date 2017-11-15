@@ -153,7 +153,7 @@ double getResiduum(double h, struct options *options, int x, int y, double star)
 }
 
 double f(double xh, double yh) {
-    return TWO_PI_SQUARE * sin(yh * PI) * sin(xh * PI);
+    return (double) TWO_PI_SQUARE * sin(yh * PI) * sin(xh * PI);
 }
 
 /* ************************************************************************ */

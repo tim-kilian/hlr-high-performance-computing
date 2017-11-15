@@ -2,7 +2,7 @@
 
 #SBATCH --nodes=4
 #SBATCH --partition=west
-#SBATCH --ntasks=4
+#SBATCH --ntasks=16
 #SBATCH --job-name="time-t"
 #SBATCH --open-mode=append
 #SBATCH --output=timescript.out

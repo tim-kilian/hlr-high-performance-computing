@@ -58,3 +58,5 @@ void AskParams( struct options*, int, char** );
 void DisplayMatrix ( char*, double*, int );
 
 void DisplayMatrixAddr ( char*, double***, int, int );
+
+double f(double xh, yh);

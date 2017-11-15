@@ -29,7 +29,8 @@ zeigt alle laufenden und wartenden Jobs an.
 Unter dem Reiter ST wird der Status angezeigt.
 
 7. 
-sview ist eine grafische Oberfläche, die sich selbstständig aktualisiert.
+$ sview
+ist eine grafische Oberfläche, die sich selbstständig aktualisiert.
 Neue Jobs werden direkt angezeigt.
 Jobs können angehalten, fortgesetzt, verändert, oder abgebrochen werden.
 Außerdem bietet sview weitere Informationen
