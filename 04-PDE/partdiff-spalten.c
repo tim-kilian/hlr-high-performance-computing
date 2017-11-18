@@ -225,20 +225,20 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 		maxresiduum = 0;
 
         /* Parallelisierung der For-Loop; mit reduction findet man den maximalen Wert von maxresiduum */
-#pragma omp parallel for private(i,j,star) reduction(max:maxresiduum)
-		for (i = 1; i < N; i++)
+#pragma omp parallel for private(i,j,star) reduction(max:maxresiduum) schedule(static,1)
+		for (j = 1; j < N; j++)
 		{
-			double fpisin_i = 0.0;
+			/* over all columns */
+			
+			for (i = 1; i < N; i++)
+			{
+				double fpisin_i = 0.0;
 
 			if (options->inf_func == FUNC_FPISIN)
 			{
 				fpisin_i = fpisin * sin(pih * (double)i);
 			}
 
-			/* over all columns */
-			
-			for (j = 1; j < N; j++)
-			{
 				star = 0.25 * (Matrix_In[i-1][j] + Matrix_In[i][j-1] + Matrix_In[i][j+1] + Matrix_In[i+1][j]);
 
 				if (options->inf_func == FUNC_FPISIN)
