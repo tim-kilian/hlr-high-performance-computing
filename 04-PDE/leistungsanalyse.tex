@@ -30,7 +30,7 @@ Bei der Messung 1 wurden die Parameter wie folgt gewählt:
 - Störfunktion 2 \\
 - Anzahl an Iterationen \\
 - 1100 Iterationen \\
-
+Es wurde auf dem Rechnerknoten west5 gerechnet!
 \noindent In der Abbildung \ref{messung1} ist die Berechnungszeit gegen die Anzahl der verwendeten Threads dargestellt. Die Berechnungszeit für einen einzelnen Thread dauert erwartungsgemäß am längsten. Bei zwei verwendeten Threads halbiert sich die Berechnungszeit näherungsweise. 
 Plottet man die Berechnungszeit gegenüber der Anzahl der Threads erhält man einen exponentiellen Verlauf. Hier ist deutlich zu erkennen, dass ab einer Verwendung von 6 Threads der Gradient sehr gering ist. Man erhält keine deutliche Verbesserung in der Berechnungszeit mehr im Vergleich zur Anzahl an Threads. 
 Bei der Verwendung von 12 Threads verkürzt sich die Berechnungszeit im Vergleich zu der mit einem Thread bei uns um den Faktor 11.5. Damit liegen wir innerhalb des geforderten Bereiches.
@@ -45,7 +45,7 @@ Bei der Verwendung von 12 Threads verkürzt sich die Berechnungszeit im Vergleic
 
 
 \section{Messung 2}
-
+Es wurde auf dem Rechnerknoten west5 gerechnet!
 In der Abbildung \ref{messung2} ist die Berechnungszeit gegen die Anzahl der Interlines dargestellt. Es ist nicht eindeutig zu erkennen, ob hier ein exponentieller Verlauf vorliegt. Dazu müsste mit noch weiteren Interlines gerechnet werden. Jedoch ist bei einer Anzahl von 1,2 oder 4 Interlines kein Unterschied in der Berechnungszeit zu erkennen. Jeder Durchlauf brachte Berechnungszeiten zwischen 0.3 und 0.9 Sekunden zum Vorschein. Das kommt durch die zu klein gewählte Matrix. Bei einer Zeilenanzahl von maximal 4 kann nicht jeder Thread eine Zeile zum Berechnen übernehmen. Die Berechnungszeit müsste theoretisch zwischen 1 und 12 Interlines fast identisch sein. Ab einer Interlines Anzahl von 13 müsste diese erst wieder ansteigen, da dann mehr Zeilen als Threads vorhanden sind. 
 
 \begin{figure}[htb]
