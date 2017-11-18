@@ -225,7 +225,7 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 		maxresiduum = 0;
 
         /* Parallelisierung der For-Loop; mit reduction findet man den maximalen Wert von maxresiduum */
-#pragma omp parallel for private(i,j,star) reduction(max:maxresiduum)
+#pragma omp parallel for private(i,j,star) reduction(max:maxresiduum) schedule(static,1)  /* Static teilt hier in Blockgrößen von 1 ein, entspricht dann einer Zeile*/
 		for (i = 1; i < N; i++)
 		{
 			double fpisin_i = 0.0;
