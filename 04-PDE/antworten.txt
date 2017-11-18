@@ -136,3 +136,5 @@ Parallelisiertes Programm mit 12 Threads:
  		0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000 0.0000
 
 Gemittelte Berechnungszeit des parallelisierten Programmes: 46,625039 s
+
+Insgesamt wurden ca. 4h fuer die Implementierung aufgewendet. Davon ein grossteil fuer die Fehlersuche.
