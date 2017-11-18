@@ -235,9 +235,9 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 */
 
 		/* over all rows */
-		#pragma omp parallel private(i,j)  /* Beginn der OpenMP parallel Directive */
-			{
-		#pragma omp for /* Parallelisierung der For-Loop */
+	/*	#pragma omp parallel private(i,j,star,residuum) shared(Matrix_In) 
+			{ */
+		#pragma omp parallel for private(i,j,star) reduction(max:maxresiduum)/* Parallelisierung der For-Loop; mit reduction findet man den maximalen Wert von maxresiduum */
 		for (i = 1; i < N; i++)
 		{
 			double fpisin_i = 0.0;
@@ -257,7 +257,6 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 				{
 					star += fpisin_i * sin(pih * (double)j);
 				}
-
 				if (options->termination == TERM_PREC || term_iteration == 1)
 				{
 					residuum = Matrix_In[i][j] - star;
@@ -268,12 +267,11 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 				Matrix_Out[i][j] = star;
 			}
 		}
-			}   /* Ende der OpenMP parallel Directive */
 		
 		
 		results->stat_iteration++;
 		results->stat_precision = maxresiduum;
-
+	
 
 
 		/* exchange m1 and m2 */
@@ -297,7 +295,9 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 		}
 	}
 
+
 	results->m = m2;
+
 }
 
 /* ************************************************************************ */
