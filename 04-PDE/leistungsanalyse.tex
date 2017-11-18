@@ -6,34 +6,96 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{ngerman}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+\inputencoding{latin1}
 \usepackage{multirow}
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{url}
 \usepackage{csvsimple}
-
-
+\usepackage{caption} 
 
 \begin{document}
-\Large\textbf{{{\noindent Ãœbungsblatt 4 - Hochleistungsrechnen\\}}}
+\Large\textbf{{{\noindent Übungsblatt 4 - Hochleistungsrechnen\\}}}
 \textbf{{Leistungsanalyse\\}}
 Tim Kilian, Joscha Fregin, Stefan Knispel
+\section{Umsetzung der Datenaufteilungen}
+Vergleich durchgeführt mit: partdiff-(spalten,zeilen,element) 12 2 512 2 2 1100\\
+Element(static, 1):64.94s \\
+Element (ohne scheduling): 57.37s\\
+Zeilen: 65.25s \\
+Spalten: 132.80s \\
+
+Die elementweise Aufteilung läuft am schnellsten. Wenn die Zerlegung der Matrix nicht festgelegt wird (kein scheduling) wird es noch schneller. Die Spaltenweise Aufteilung ist am langsamsten, weil durch das Vertauschen der Indices, der Speicher für den Programmablauf ungünstig eingelesen wird. Dies ist bei der Zeilenmethode nicht der Fall, weshalb sie schneller ist (wie bei der ersten Optimierungsaufgabe zum sequentiellen Verfahren).
+
+
+
+
+\section{Vergleich der Scheduling Algorithmen}
+Der Vergleich der Algorithmen wurde auf dem Rechenknoten west7 durchgeführt mit folgenden Einstellungen: \\
+./partdiff-openmp 12 2 512 2 2 1100, der code des sequentiellen Programms wurde nur durch die OpenMP Parallelisierung erweitert (keine Zeilen, Spalten Elementweise Aufteilung). Datenaufteilung durch Elemente wird später betrachtet.\\
+Wie Tabelle \ref{tab1} zu entnehmen ist nicht ganz eindeutig welcher Algorithmus am besten funktioniert. 
+guided läuft zwar mit 48.85s am schnellsten, ist jedoch nicht so konstant wie die kaum langsamer laufende Einstellung dynamic (1,4). Am langsamsten läuft der static Algorithmus. Er weist auch die größten Schwankungen der Laufzeiten auf.
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ l|l|l|l }
+   Blockgr. & dynamic & static & guided \\ \hline
+     & 		 &  & 52.65 \\ 
+     &		 & 	 &48.85  \\ 
+     & 		&  	 & 49.05 \\ \hline
+  1 & 49.46	 & 52.76 		 &  \\ 
+     & 49.54	 & 61.74		 &  \\ 
+    & 49.35	 	&  58.04		 & \\ \hline
+  2 &  & 59.89 &  \\ 
+      &  & 68.84 &  \\ 
+         &  & 57.93 &  \\ \hline
+   4 & 49.47 & 52.43 &  \\ 
+    & 49.45 & 63.69 &  \\ 
+     & 49.29 & 60.72 &  \\ \hline
+     16 &  & 64.74 &  \\
+         &  & 64.55 &  \\
+                 &  & 62.74 &  \\ \hline
+
+\end{tabular}
+\caption{Vergleich der Scheduling Algorithmen mit jeweils drei Messläufen pro Einstellung in Sekunden}
+\label{tab1}
+\end{table}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{ l|l|l|l }
+   Blockgr. & dynamic & static & guided \\ \hline
+   & 	 	&  		 & 49.76 \\ \hline
+   1 & 84.87	 	&  64.94		 & \\ \hline
+
+      2   &  & 71.41 &  \\ \hline
+
+     4& 59.35 & 56.18 &  \\ \hline
+
+                16 &  & 66.79 &  \\ \hline
+
+\end{tabular}
+\caption{Vergleich der Scheduling Algorithmen für Elementzerlegung mit jeweils einem Messlauf pro Einstellung in Sekunden}
+\label{tab2}
+\end{table}
+Für die elementweise Zerlegung ist die guided Methode ebenfalls die schnellste. Jedoch ist dynamic langsamer als static (selbst bei gleicher Blockgröße).
 
 
 \section{Messung 1}
 
-Bei der Messung 1 wurden die Parameter wie folgt gewÃ¤hlt:
+Bei der Messung 1 wurden die Parameter wie folgt gewählt:
 - Threadanzahl ansteigend von 1 bis 12 \\
 - Jacobi-Methode \\
 - Interlines 512 \\
-- StÃ¶rfunktion 2 \\
-- Anzahl an Iterationen \\
+- Störfunktion 2 \\
 - 1100 Iterationen \\
 Es wurde auf dem Rechnerknoten west5 gerechnet!
-\noindent In der Abbildung \ref{messung1} ist die Berechnungszeit gegen die Anzahl der verwendeten Threads dargestellt. Die Berechnungszeit fÃ¼r einen einzelnen Thread dauert erwartungsgemÃ¤ÃŸ am lÃ¤ngsten. Bei zwei verwendeten Threads halbiert sich die Berechnungszeit nÃ¤herungsweise. 
-Plottet man die Berechnungszeit gegenÃ¼ber der Anzahl der Threads erhÃ¤lt man einen exponentiellen Verlauf. Hier ist deutlich zu erkennen, dass ab einer Verwendung von 6 Threads der Gradient sehr gering ist. Man erhÃ¤lt keine deutliche Verbesserung in der Berechnungszeit mehr im Vergleich zur Anzahl an Threads. 
-Bei der Verwendung von 12 Threads verkÃ¼rzt sich die Berechnungszeit im Vergleich zu der mit einem Thread bei uns um den Faktor 11.5. Damit liegen wir innerhalb des geforderten Bereiches.
+\noindent In der Abbildung \ref{messung1} ist die Berechnungszeit gegen die Anzahl der verwendeten Threads dargestellt. Die Berechnungszeit für einen einzelnen Thread dauert erwartungsgemäß am längsten. Bei zwei verwendeten Threads halbiert sich die Berechnungszeit näherungsweise. 
+Plottet man die Berechnungszeit gegenüber der Anzahl der Threads erhält man einen exponentiellen Verlauf. Hier ist deutlich zu erkennen, dass ab einer Verwendung von 6 Threads der Gradient sehr gering ist. Man erhält keine deutliche Verbesserung in der Berechnungszeit mehr im Vergleich zur Anzahl an Threads. 
+Bei der Verwendung von 12 Threads verkürzt sich die Berechnungszeit im Vergleich zu der mit einem Thread bei uns um den Faktor 11.5. Damit liegen wir innerhalb des geforderten Bereiches. \\
+Das sequentielle Programm hat auf Knoten 7 581.856389 s (582.753409 s im zweiten Durchlauf) benötigt und liegt damit knapp über dem OpenMP Programm mit einem Thread. Möglicherweise funktiniert die Compileroptimierung für OpenMP hier besser, oder der Unterschied ist durch den Rechenknoten entstanden.
 
 \begin{figure}[htb]
 \centering
@@ -46,7 +108,7 @@ Bei der Verwendung von 12 Threads verkÃ¼rzt sich die Berechnungszeit im Vergleic
 
 \section{Messung 2}
 Es wurde auf dem Rechnerknoten west5 gerechnet!
-In der Abbildung \ref{messung2} ist die Berechnungszeit gegen die Anzahl der Interlines dargestellt. Es ist nicht eindeutig zu erkennen, ob hier ein exponentieller Verlauf vorliegt. Dazu mÃ¼sste mit noch weiteren Interlines gerechnet werden. Jedoch ist bei einer Anzahl von 1,2 oder 4 Interlines kein Unterschied in der Berechnungszeit zu erkennen. Jeder Durchlauf brachte Berechnungszeiten zwischen 0.3 und 0.9 Sekunden zum Vorschein. Das kommt durch die zu klein gewÃ¤hlte Matrix. Bei einer Zeilenanzahl von maximal 4 kann nicht jeder Thread eine Zeile zum Berechnen Ã¼bernehmen. Die Berechnungszeit mÃ¼sste theoretisch zwischen 1 und 12 Interlines fast identisch sein. Ab einer Interlines Anzahl von 13 mÃ¼sste diese erst wieder ansteigen, da dann mehr Zeilen als Threads vorhanden sind. 
+In der Abbildung \ref{messung2} ist die Berechnungszeit gegen die Anzahl der Interlines dargestellt. Es ist nicht eindeutig zu erkennen, ob hier ein exponentieller Verlauf vorliegt. Dazu müsste mit noch weiteren Interlines gerechnet werden. Jedoch ist bei einer Anzahl von 1,2 oder 4 Interlines kein Unterschied in der Berechnungszeit zu erkennen. Jeder Durchlauf brachte Berechnungszeiten zwischen 0.3 und 0.9 Sekunden zum Vorschein. Das kommt durch die zu klein gewählte Matrix. Bei einer Zeilenanzahl von maximal 4 kann nicht jeder Thread eine Zeile zum Berechnen übernehmen. Die Berechnungszeit müsste theoretisch zwischen 1 und 12 Interlines fast identisch sein. Ab einer Interlines Anzahl von 13 müsste diese erst wieder ansteigen, da dann mehr Zeilen als Threads vorhanden sind. \\
 
 \begin{figure}[htb]
 \centering
