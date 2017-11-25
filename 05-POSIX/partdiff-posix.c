@@ -26,9 +26,8 @@
 #include <math.h>
 #include <malloc.h>
 #include <sys/time.h>
-#include <omp.h>
 
-#include "partdiff-openmp.h"
+#include "partdiff-posix.h"
 
 struct calculation_arguments
 {
@@ -224,8 +223,6 @@ calculate (struct calculation_arguments const* arguments, struct calculation_res
 
 		maxresiduum = 0;
 
-        /* Parallelisierung der For-Loop; mit reduction findet man den maximalen Wert von maxresiduum */
-#pragma omp parallel for private(i,j,star) reduction(max:maxresiduum)
 		for (i = 1; i < N; i++)
 		{
 			double fpisin_i = 0.0;
