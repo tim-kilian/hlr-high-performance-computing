@@ -198,7 +198,6 @@ static void* iterate(void* thread_data) {
 	double pih = 0.0;
 	double fpisin = 0.0;
 
-
 	struct thread_data* thread = (struct thread_data*) thread_data;
 	struct options const* options = thread->options;
 	struct calculation_arguments const* arguments = thread->arguments;
@@ -215,6 +214,7 @@ static void* iterate(void* thread_data) {
 	double** Matrix_Out = thread->Matrix_Out;
 
 	/* over all rows */
+	// calculate start and end position for each thread
 	for (i = N * thread->id/thread_count + 1; i < N && i <= N * (thread->id + 1)/thread_count; i++) {
 		double fpisin_i = (options->inf_func == FUNC_FPISIN) ? fpisin * sin(pih * (double) i) : 0.0;
 
@@ -228,6 +228,7 @@ static void* iterate(void* thread_data) {
 			if (options->termination == TERM_PREC || options->term_iteration == 1) {
 				residuum = Matrix_In[i][j] - star;
 				residuum = fmax(-residuum, residuum);
+				// save max residuum in data of thread
 				thread->maxresiduum = fmax(thread->maxresiduum, residuum);
 			}
 
@@ -235,6 +236,7 @@ static void* iterate(void* thread_data) {
 		}
 	}
 
+	// terminate thread
 	pthread_exit(NULL);
 }
 
@@ -244,7 +246,9 @@ static void calculate (struct calculation_arguments const* arguments, struct cal
 	int m1, m2;                                 /* used as indices for old and new matrices */
 	double maxresiduum;                         /* maximum residuum value of a slave in iteration */
 
+	// array of threads
 	pthread_t* threads = (pthread_t*) malloc(sizeof(pthread_t) * options->number);
+	// array of data for each thread
 	struct thread_data* thread_data = (struct thread_data*) malloc(sizeof(struct thread_data) * options->number);
 
 	int term_iteration = options->term_iteration;
@@ -258,18 +262,24 @@ static void calculate (struct calculation_arguments const* arguments, struct cal
 	{
 		maxresiduum = 0;
 
+		// create and start threads
 		for (t=0; t<thread_count; t++) {
+			// arguments
 			thread_data[t].id = t;
 			thread_data[t].Matrix_Out = arguments->Matrix[m1];
 			thread_data[t].Matrix_In = arguments->Matrix[m2];
 			thread_data[t].options = options;
 			thread_data[t].arguments = arguments;
 
+			// call iterate
 			pthread_create(&threads[t], NULL, iterate, (void *) &thread_data[t]);
 		}
 
+		// join threads
 		for (t=0; t<thread_count; t++) {
+			// wait for thread termination
 			pthread_join(threads[t], NULL);
+			// get the maximum of each iteration
 			maxresiduum = fmax(maxresiduum, thread_data->maxresiduum);
 		}
 		
