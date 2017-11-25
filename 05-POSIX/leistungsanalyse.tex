@@ -1,22 +1,102 @@
 \documentclass[11pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
 \usepackage{a4wide}
 \usepackage{graphicx}
 \usepackage{epsfig}
-\usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
+\usepackage{amsmath, amssymb, amsfonts}
 \usepackage{ngerman}
-\usepackage[T1]{fontenc}
-\usepackage[utf8]{inputenc}
-\inputencoding{latin1}
 \usepackage{multirow}
 \usepackage{hyperref}
 \usepackage{float}
 \usepackage{url}
 \usepackage{csvsimple}
-\usepackage{caption} 
+\usepackage{caption}
+
+\usepackage{pgfplots}
+\usepackage{csvsimple}
+\begin{filecontents*}{data1.csv}
+a,b
+1, 54.91
+2, 28.14
+3, 19.24
+4, 14.81
+5, 12.35
+6, 11.03
+7, 10.02
+8, 9.26
+9, 8.55
+10, 7.86
+11, 7.11
+12, 6.65
+
+1, 54.98
+2, 28.04
+3, 19.29
+4, 14.78
+5, 12.52
+6, 10.91
+7, 10.03
+8, 9.31
+9, 8.72
+10, 7.40
+11, 7.05
+12, 6.66
+
+1, 54.93
+2, 28.21
+3, 19.25
+4, 14.68
+5, 12.40
+6, 11.02
+7, 10.02
+8, 9.25
+9, 8.55
+10, 7.99
+11, 7.17
+12, 6.81
+\end{filecontents*}
+
+\begin{filecontents*}{data2.csv}
+a,b,c,d
+1, 54.91, 54.98, 54.93
+2, 28.14, 28.04, 28.21
+3, 19.24, 19.29, 19.25
+4, 14.81, 14.78, 14.68
+5, 12.35, 12.52, 12.40
+6, 11.03, 10.91, 11.02
+7, 10.02, 10.03, 10.02
+8, 9.26, 9.31, 9.25
+9, 8.55, 8.72, 8.55
+10, 7.86, 7.40, 7.99
+11, 7.11, 7.05, 7.17
+12, 6.65, 6.66, 6.81
+\end{filecontents*}
 
 \begin{document}
+    \Large\textbf{{{\noindent Übungsblatt 4 - Hochleistungsrechnen\\ }}}
+    \textbf{{Leistungsanalyse\\}}
+    Tim Kilian, Joscha Fregin, Stefan Knispel
 
+    \section{Messung}
+
+    \begin{tabular}{c|c|c|c}
+        \bfseries Threads & \bfseries Time (seconds) & \bfseries Time (seconds) & \bfseries Time (seconds)
+        \csvreader[head to column names]{data2.csv}{}
+        {\\\hline\csvcoli&\csvcolii&\csvcoliii&\csvcoliv}
+    \end{tabular}
+    \\
+
+    \begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[ymin=0, xmin=1, xlabel={Threads}, ylabel={Time (seconds)}]
+			\addplot table [x=a, y=b, col sep=comma] {data1.csv};
+		\end{axis}
+	\end{tikzpicture}
+
+	\end{center}
+	Je mehr Threads man hinzunimmt erhöht sich die Ausführungszeit des Programmes.
+	Während jedochs anfangs die Leistungszunahme bei 50\% liegt,
+	ist sie ab einer gewissen Anzahl an Threads kaum noch zu spüren.
 
 \end{document}
