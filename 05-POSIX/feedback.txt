@@ -2,12 +2,24 @@ Die Bearbeitungszeit bitte in ganzen Stunden angeben (aufrunden).
 In den restlichen Zeilen jeweils ein X in der zutreffenden Spalte setzen.
 
 Bearbeitungszeit:  
-Schwierigkeit:     [ ] zu leicht         [ ] genau richtig     [ ] zu schwer
-Lehrreich:         [ ] wenig             [ ] etwas             [ ] sehr
-Verständlichkeit:  [ ] großteils unklar  [ ] teilweise unklar  [ ] verständlich
+Schwierigkeit:     [X] zu leicht         [ ] genau richtig     [ ] zu schwer
+Lehrreich:         [ ] wenig             [ ] etwas             [X] sehr
+Verständlichkeit:  [ ] großteils unklar  [ ] teilweise unklar  [X] verständlich
 
 Kommentar:
 Zeitaufwand zu groß? Wo sind Sie nicht weiter gekommen?
+
+Am Meta (Ausführung, Plot, Jobscripts/Timescript) hing man teilweise länger als für die pthreads.
+
 Was war zu schwer oder unverständlich?
+
+Alles super. :)
+
 Was könnten wir verbessern?
+
+Ein fertiges timescript/jobscript hinzufügen um csv Dateien zu generieren.
+
 Was hat Ihnen besonders gut gefallen?
+
+Der Einblick in Pthreads.
+Pthreads hat mir persönlich besser gefallen als OpenMP.
