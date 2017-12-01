@@ -1,7 +1,7 @@
 #!/bin/bash -l
 
-#SBATCH --nodes=4
-#SBATCH --tasks=4
+#SBATCH --nodes=5
+#SBATCH --tasks=5
 #SBATCH --partition=west
 #SBATCH --job-name="MPI-T"
 #SBATCH --open-mode=append
@@ -9,5 +9,7 @@
 
 echo -n '' >> test.out
 mpiexec ./timempi
+echo '...........................' >> test.out
+mpiexec ./timempi2
 echo '--------------------------' >> test.out
 #echo 'fertig' > job_script.out
