@@ -1,48 +1,59 @@
-#include <mpi.h>
-#include <stdio.h>
-#include <sys/time.h>
 #include <unistd.h>
+#include <stdio.h>
+#include <mpi.h>
+#include <sys/time.h>
 #include <time.h>
+
+
 int main (int argc, char **argv)
-{
-int myrank, size, status;
-char buffer[256];
-char hostname[16];
-struct timeval timeofday;
-time_t t;
-struct tm * ts;
-status = 0;
-t = time(NULL);
-ts = localtime(&t);
-
-/* MPI Initialisierung, Rangabfrage und Anzahlabfrage */
-MPI_Init( &argc, &argv );
-MPI_Comm_rank( MPI_COMM_WORLD, &myrank);
-MPI_Comm_size( MPI_COMM_WORLD, &size);
-
-/* Ausgabe der einzelnen Prozesse */
-if (myrank != 0)
-{
-	gethostname(hostname, sizeof hostname);
-	gettimeofday(&timeofday, NULL);
-	snprintf(buffer,sizeof(buffer), "%s: %d-%d-%d %d:%d:%d.%ld\n", hostname,
-		 ts->tm_year+1900, ts->tm_mon+1, ts->tm_mday, ts->tm_hour, ts->tm_min,
-		 ts->tm_sec, timeofday.tv_usec);
-	MPI_Send(&buffer, sizeof(buffer), MPI_CHAR, 0, 99 ,  MPI_COMM_WORLD);
-	MPI_Barrier(MPI_COMM_WORLD);
-	printf("Rang %d beendet jetzt!\n", myrank);
-}
-else
-{
-	for (int i = 1; i < size; i++)
 	{
-	MPI_Recv(&buffer, sizeof(buffer), MPI_CHAR, i, 99, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-	printf("%s",buffer);
+		int rank, size;
+		struct timeval tv;
+		struct tm* ptm;
+		char time_string[40];
+		char hostname[30];
+		long mikroseconds;
+		char buffer[100];
+
+
+
+
+		MPI_Init( &argc, &argv );
+		MPI_Comm_rank( MPI_COMM_WORLD, &rank );
+		MPI_Comm_size( MPI_COMM_WORLD, &size );
+
+
+	if (rank != 0)
+	{
+		/* Ausgabe */
+		gettimeofday(&tv, NULL);
+		gethostname(hostname, sizeof(hostname));
+		ptm = localtime (&tv.tv_sec);
+		strftime (time_string, sizeof(time_string), "%Y-%m-%d %H:%M:%S",ptm);
+		mikroseconds = tv.tv_usec;
+		snprintf(buffer, sizeof(buffer), "%s: %s.%06ld\n", hostname, time_string, mikroseconds);
+		MPI_Send(&buffer, sizeof(buffer), MPI_CHAR, 0, 999, MPI_COMM_WORLD);
+		/*MPI_Send(&mikroseconds, sizeof(mikroseconds), MPI_LONG, 0, 999, MPI_COMM_WORLD);*/
+		/*MPI_Barrier(MPI_COMM_WORLD);*/
+		/*printf("Rang %d beendet jetzt!\n", rank);*/
 	}
-	MPI_Barrier(MPI_COMM_WORLD);
-	printf("Rang %d beendet jetzt!\n", myrank);
-}
-/* Beenden der MPI Routine */
+	else
+	{
+	
+	for(int i = 1; i < size; i++) 
+	{
+		MPI_Recv(&buffer, sizeof(buffer), MPI_CHAR, i, 999, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+		/*MPI_Recv(&mikroseconds, sizeof(mikroseconds), MPI_LONG, i, 999, MPI_COMM_WORLD, MPI_STATUS_IGNORE);*/
+  		printf("%s\n", buffer);
+	}	
+
+	}
+		MPI_Barrier(MPI_COMM_WORLD);
+	printf("Rang %d beendet jetzt!\n", rank);
+
+
+
 MPI_Finalize();
 return 0;
-}
+
+	}
