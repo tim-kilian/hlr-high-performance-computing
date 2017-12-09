@@ -26,7 +26,7 @@ displ (int N,int size)
 {
   int* displacement = malloc(sizeof(int) * N);
    
-  for (int i = 0; i < N; i++)
+  for (int i = 0; i < size; i++)
   {
       displacement[i] = (i) * (N/size) ;
   }
@@ -39,7 +39,7 @@ sendc (int N,int size)
    int* sendcounts = malloc(sizeof(int) * N);
    int rest;
    rest = N % size;
-   for (int i = 0; i < N; i++)
+   for (int i = 0; i < size; i++)
    { 
       if (rest == 0)
       {
