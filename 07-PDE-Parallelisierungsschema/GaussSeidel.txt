@@ -1,0 +1,27 @@
+Verfahren aus Sicht eines einzelnen Prozesses
+
+Halolinien sind Randlinien(Randbedingungen - oberste und unterste Linie einer Teilmatrix)
+1. Empfangen der oberen Haloline vom vorherigen Prozess 
+2. Berechnung der ersten Zeile der Teilmatrix
+3. Versenden dieser Zeile an den vorherigen Prozess
+4. Berechnung der restlichen Zeilen der Teilmatrix
+5. Versenden der letzten berechneten Zeile an den nächsten Prozess 
+6. Empfangen der unteren Haloline vom nächsten Prozess
+Besonderheiten:
+Beim nullten Prozesses entfallen die Schritte 1-3, beim letzten Prozesses entfallen die Schritte 5-6.
+Abbruchkriterium nach Iteration:
+Hier gibt es keine besonderen Schwierigkeiten. Die Schleife wird von jedem Prozess bis zur gewünschten
+Iterationszahl durchlaufen. Wie in Aufgabe 7A führt der Masterprozess anschließend mit MPI_GATHERV die 
+Teilmatrizen wieder zusammen.
+
+Abbruchkriterium nach Genauigkeit:
+Zunächst wird wie in Aufgabe 7b geprüft, wann alle Prozesse die gewünschte Genauigkeit erreicht haben. 
+Beim Gauss-Seidel Verfahren besteht nun die Schwierigkeit darin, dass sich die einzelnen Prozesse in 
+verschiedenen Iterationen befinden. Der nullte Prozess hat dabei immer die größte Anzahl an Iterationen 
+durchlaufen, da der nachfolgende Prozess immer auf die letzte berechnete Zeile des vorherigen warten muss. 
+Mit MPI_IREDUCE überprüft der nullte Prozess, die Abbruchkriterien aller Prozesse. Sobald alle die 
+gewünschte Genauigkeit erreicht haben, hört der nullte Prozess auf zu rechnen und alle anderen Prozesse 
+rechnen um Rank Iterationen weiter. So wird sichergestellt, dass alle Prozesse die gleiche Anzahl an 
+Iterationen durchlaufen haben. Mit einem MPI_REDUCE einer weiteren logical Variable, welches vom nullten 
+Prozess ausgeführt wird, stellt dieser fest ob alle Prozesse fertig sind. Dann werden mit MPI_GATHERV die 
+Teilmatrizen durch den nullten Prozess zusammengeführt.
