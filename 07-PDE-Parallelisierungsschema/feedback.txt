@@ -2,12 +2,19 @@ Die Bearbeitungszeit bitte in ganzen Stunden angeben (aufrunden).
 In den restlichen Zeilen jeweils ein X in der zutreffenden Spalte setzen.
 
 Bearbeitungszeit:  
-Schwierigkeit:     [ ] zu leicht         [ ] genau richtig     [ ] zu schwer
-Lehrreich:         [ ] wenig             [ ] etwas             [ ] sehr
-Verständlichkeit:  [ ] großteils unklar  [ ] teilweise unklar  [ ] verständlich
+Schwierigkeit:     [ ] zu leicht         [x] genau richtig     [ ] zu schwer
+Lehrreich:         [ ] wenig             [x] etwas             [ ] sehr
+Verständlichkeit:  [ ] großteils unklar  [x] teilweise unklar  [ ] verständlich
 
 Kommentar:
 Zeitaufwand zu groß? Wo sind Sie nicht weiter gekommen?
 Was war zu schwer oder unverständlich?
+Durch die Vorgabe des circle.c files, waren wir unsicher wie die Initialisierung geschehen soll.
+In der Aufgabe steht ja, dass das kein Prozess jemals die komplette Matrix haben darf, dennoch wird am
+Anfang ja ein kompletter Vektor initialisiert. Jetzt ist uns klar, dass die Aufgabe eben darin bestand
+genau hier die Aufteilung zu beginnen. Unser Ergebnis mit Scatterv und Gatherv ist demnach falsch.
+Was war zu schwer oder unverständlich?
 Was könnten wir verbessern?
+Evtl. ein paar mehr Beschreibungen in circle.c damit etwas klarer ist was zu tun ist.
 Was hat Ihnen besonders gut gefallen?
+
