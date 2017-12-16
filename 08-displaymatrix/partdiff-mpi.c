@@ -32,8 +32,6 @@
 
 #include "partdiff-mpi.h"
 
-#define RECEIVER 0
-
 int size, rank;
 
 struct calculation_arguments {
@@ -62,10 +60,7 @@ struct timeval comp_time;        /* time when calculation completed             
 /* ************************************************************************ */
 /* initVariables: Initializes some global variables                         */
 /* ************************************************************************ */
-static
-void
-initVariables(struct calculation_arguments *arguments, struct calculation_results *results,
-              struct options const *options) {
+static void initVariables(struct calculation_arguments *arguments, struct calculation_results *results, struct options const *options) {
     arguments->N = (options->interlines * 8) + 9 - 1;
     arguments->num_matrices = (options->method == METH_JACOBI) ? 2 : 1;
     arguments->h = 1.0 / arguments->N;
@@ -78,9 +73,7 @@ initVariables(struct calculation_arguments *arguments, struct calculation_result
 /* ************************************************************************ */
 /* freeMatrices: frees memory for matrices                                  */
 /* ************************************************************************ */
-static
-void
-freeMatrices(struct calculation_arguments *arguments) {
+static void freeMatrices(struct calculation_arguments *arguments) {
     uint64_t i;
 
     for (i = 0; i < arguments->num_matrices; i++) {
@@ -95,9 +88,7 @@ freeMatrices(struct calculation_arguments *arguments) {
 /* allocateMemory ()                                                        */
 /* allocates memory and quits if there was a memory allocation problem      */
 /* ************************************************************************ */
-static
-void *
-allocateMemory(size_t size) {
+static void *allocateMemory(size_t size) {
     void *p;
 
     if ((p = malloc(size)) == NULL) {
@@ -111,9 +102,7 @@ allocateMemory(size_t size) {
 /* ************************************************************************ */
 /* allocateMatrices: allocates memory for matrices                          */
 /* ************************************************************************ */
-static
-void
-allocateMatrices(struct calculation_arguments *arguments) {
+static void allocateMatrices(struct calculation_arguments *arguments) {
     uint64_t i, j;
 
     uint64_t const N = arguments->N;
@@ -133,9 +122,7 @@ allocateMatrices(struct calculation_arguments *arguments) {
 /* ************************************************************************ */
 /* initMatrices: Initialize matrix/matrices and some global variables       */
 /* ************************************************************************ */
-static
-void
-initMatrices(struct calculation_arguments *arguments, struct options const *options) {
+static void initMatrices(struct calculation_arguments *arguments, struct options const *options) {
     uint64_t g, i, j;                                /*  local variables for loops   */
 
     uint64_t const N = arguments->N;
@@ -204,6 +191,7 @@ static void calculate(struct calculation_arguments const *arguments, struct calc
 
     from = N * rank / size + 1;
     to = N * (rank + 1) / size;
+    int limit = (to==N) ? to-1 : to;
     int elements = 8 * options->interlines + 9;
 
     while (term_iteration > 0) {
@@ -212,13 +200,7 @@ static void calculate(struct calculation_arguments const *arguments, struct calc
 
         maxresiduum = 0;
 
-        if (rank > 0) MPI_Send(Matrix_In[from], elements, MPI_DOUBLE, rank-1, from, MPI_COMM_WORLD);
-        if (rank < size-1) MPI_Send(Matrix_In[to], elements, MPI_DOUBLE, rank+1, to, MPI_COMM_WORLD);
-
-        if (rank > 0) MPI_Recv(Matrix_In[from-1], elements, MPI_DOUBLE, rank-1, from-1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-        if (rank < size-1) MPI_Recv(Matrix_In[to+1], elements, MPI_DOUBLE, rank+1, to+1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-
-        for (i = from; i<N && i <= to; i++) {
+        for (i = from; i<=limit; i++) {
             double fpisin_i = 0.0;
 
             if (options->inf_func == FUNC_FPISIN) {
@@ -251,9 +233,7 @@ static void calculate(struct calculation_arguments const *arguments, struct calc
 
         MPI_Reduce(&maxresiduum, &status, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
-        if (rank == RECEIVER) {
-            maxresiduum = fmax(status, maxresiduum);
-        }
+        if (rank == 0) { maxresiduum = fmax(status, maxresiduum); }
 
         results->stat_iteration++;
         results->stat_precision = maxresiduum;

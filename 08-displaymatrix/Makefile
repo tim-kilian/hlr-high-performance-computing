@@ -1,6 +1,6 @@
 CC = mpicc
 
-CFLAGS = -Wall -Wextra
+CFLAGS = -Wall -Wextra -fopenmp
 LIBS   = -lm
 
 TARGETS = partdiff-seq partdiff-mpi
