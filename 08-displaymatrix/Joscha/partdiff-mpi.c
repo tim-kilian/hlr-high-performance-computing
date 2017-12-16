@@ -9,24 +9,6 @@ This by now is just a roadmap as to how it should be done
 #include <math.h>
 #include "partdiff-mpi.h"
 
-/* some struct that gets the following parameters (per default maybe?) 
-	-number of processes
-	-number of interlines (total number of lines should be interlines * 8 + 9)
-	-poission or or laplace problem ( = 0 or = f(x,y))
-	-precision
-	-max iterations */
-
-
-/* Matrix creation (just memory allocation)
-	-needs number of lines as input */
-
-/* Matrix Initialization (write constraints to matrix) */
-
-/* Calculations should be done here 
-	-needs routine that gets indices
-	-need routine that commuicates between processes*/
-
-/* untested */
 struct calculation_arguments {
     int N;              /* number of spaces between lines (lines=N+1)     */
     int num_matrices;   /* number of matrices                             */
