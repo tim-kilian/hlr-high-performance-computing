@@ -158,7 +158,7 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
 	int lines;
         int const N = arguments->N;
         double const h = arguments->h;
-
+        int start;
         double pih = 0.0;
         double fpisin = 0.0;
 
@@ -183,6 +183,11 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                 pih = PI * h;
                 fpisin = 0.25 * TWO_PI_SQUARE * h * h;
         }
+
+	start = 0;
+        for (int i = 0; i < myrank; i++){
+        	start = start + calculate_lines(i,size, options->interlines);
+        }
         while (term_iteration > 0)
         {
                 double** Matrix_Out = arguments->Matrix[m1];
@@ -203,10 +208,10 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                 for (i = 1; i <= lines; i++)
                 {
                         double fpisin_i = 0.0;
-
+			double position = i + (double) start;
                         if (options->inf_func == FUNC_FPISIN)
-                        {
-                                fpisin_i = fpisin * sin(pih * (double)i);
+                        {// i NEEDS TO BE CHANGED!!!
+                                fpisin_i = fpisin * sin(pih * (double)position);
                         }
 
                         /* over all columns */
