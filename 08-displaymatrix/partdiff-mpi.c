@@ -249,7 +249,7 @@ static void calculate(struct calculation_arguments const *arguments, struct calc
         if (rank > 0) MPI_Recv(Matrix_Out[from-1], elements, MPI_DOUBLE, rank-1, from-1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
         if (rank < size-1) MPI_Recv(Matrix_Out[to+1], elements, MPI_DOUBLE, rank+1, to+1, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 
-        MPI_Reduce(&maxresiduum, &status, 1, MPI_DOUBLE, MPI_MAX, RECEIVER, MPI_COMM_WORLD);
+        MPI_Reduce(&maxresiduum, &status, 1, MPI_DOUBLE, MPI_MAX, 0, MPI_COMM_WORLD);
 
         if (rank == RECEIVER) {
             maxresiduum = fmax(status, maxresiduum);
@@ -263,13 +263,12 @@ static void calculate(struct calculation_arguments const *arguments, struct calc
         m1 = m2;
         m2 = i;
 
-        MPI_Barrier(MPI_COMM_WORLD);
-
         /* check for stopping calculation depending on termination method */
         if (options->termination == TERM_PREC) {
             if (maxresiduum < options->term_precision) {
                 term_iteration = 0;
             }
+            MPI_Allreduce(&term_iteration, &term_iteration, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
         } else if (options->termination == TERM_ITER) {
             term_iteration--;
         }
