@@ -276,7 +276,7 @@ DisplayMatrix (struct calculation_arguments* arguments, struct calculation_resul
   int x, y;
   double** Matrix = arguments->Matrix[results->m];
   MPI_Status status;
-
+  MPI_Barrier(MPI_COMM_WORLD);
   /* first line belongs to rank 0 */
   if (rank == 0)
     from--;
@@ -370,6 +370,8 @@ main(int argc, char** argv)
    for (int i = 0; i <= myrank; i++){
 	to = to + calculate_lines(i, size, options.interlines);
     }
-    //MPI_Barrier(MPI_COMM_WORLD);
+  
     DisplayMatrix(&arguments, &results, &options, myrank, size, from, to);
+    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Finalize();
 }
