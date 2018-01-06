@@ -4,42 +4,35 @@ BEGIN calculate(rank, size)
         fpisin := 0.25 * TWO_PI_SQUARE * h * h
     END IF
 
-    m1 := 0
-    m2 := 0
-    Matrix_Out := Matrix[m1]
-    Matrix_In := Matrix[m2]
-
     lines := calculate_lines(rank, size, interlines)
-
+    term_iteration += rank
+    iteration := 0
+    help := 0
     start := 0
     FOR i TO rank DO
         start += calculate_lines(i, size, interlines)
     END FOR
 
-    term_iteration += rank
-    iteration := 0
-    help := 0
-
     WHILE term_iteration > 0 && (help == 0 || help == 1) DO
 
-        IF termination == TERM_PREC && help == 1 Do
+        IF termination == TERM_PREC && help == 1 DO
             term_iteration--
         END IF
 
         maxresiduum := 0
 
         IF rank < (size - 1) DO
-            MPI_Send(Matrix_In[lines], N + 1, MPI_DOUBLE, rank + 1, rank, MPI_COMM_WORLD)
+            MPI_Send(Matrix[0][lines], N + 1, MPI_DOUBLE, rank + 1, rank, MPI_COMM_WORLD)
         END IF
             IF rank > 0 DO
                 IF term_iteration > 1 DO
-                    MPI_Recv(Matrix_In[0], N + 1, MPI_DOUBLE, rank - 1, rank - 1, MPI_COMM_WORLD, &status)
-                    MPI_Send(Matrix_In[1], N + 1, MPI_DOUBLE, rank - 1, rank, MPI_COMM_WORLD)
+                    MPI_Recv(Matrix[0][0], N + 1, MPI_DOUBLE, rank - 1, rank - 1, MPI_COMM_WORLD, &status)
+                    MPI_Send(Matrix[0][1], N + 1, MPI_DOUBLE, rank - 1, rank, MPI_COMM_WORLD)
                 END IF
             END IF
 
             IF rank < (size - 1) && term_iteration > 1 DO
-                MPI_Recv(Matrix_In[lines + 1], N + 1, MPI_DOUBLE, rank + 1, rank + 1, MPI_COMM_WORLD, &status)
+                MPI_Recv(Matrix[0][lines + 1], N + 1, MPI_DOUBLE, rank + 1, rank + 1, MPI_COMM_WORLD, &status)
             END IF
         END IF
 
@@ -52,19 +45,19 @@ BEGIN calculate(rank, size)
                 END IF
 
                 FOR j TO N DO
-                    star := 0.25 * (Matrix_In[i - 1][j] + Matrix_In[i][j - 1] + Matrix_In[i][j + 1] + Matrix_In[i + 1][j])
+                    star := 0.25 * (Matrix[0][i - 1][j] + Matrix[0][i][j - 1] + Matrix[0][i][j + 1] + Matrix[0][i + 1][j])
 
                     IF inf_func == FUNC_FPISIN DO
                         star += fpisin_i * sin(pih * j)
                     END IF
 
                     IF termination == TERM_PREC || term_iteration == 1 DO
-                        residuum := Matrix_In[i][j] - star
+                        residuum := Matrix[0][i][j] - star
                         residuum := (residuum < 0) ? -residuum : residuum
                         maxresiduum := max(maxresiduum, residuum)
                     END IF
 
-                    Matrix_Out[i][j] := star
+                    Matrix[0][i][j] := star
                 END FOR
             END FOR
         END IF
@@ -89,9 +82,7 @@ END calculate
 
 
 BEGIN calculate_lines(rank, size, interlines)
-    int lines;
-
-    lines = 8 * interlines + 9 - 2;
+    lines := 8 * interlines + 9 - 2
 
     IF lines % size == 0 DO
         RETURN lines / size
