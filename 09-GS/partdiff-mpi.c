@@ -43,25 +43,25 @@ static void initVariables(struct calculation_arguments *arguments, struct calcul
 int
 calculate_lines(int myrank, int size, int interlines)
 {
-	int lines;
-	int mylines;
+    int lines;
+    int mylines;
 
-	lines = 8*interlines + 9 - 2;
-	
-	if ((lines % size) == 0){
-		mylines = lines/size;
-	}	
-	else {
-		/* Der Rest wird auf die letzten Prozesse aufgeteilt */
-		if (myrank >= (size - (lines % size)) ){
-			mylines = lines/size + 1;
-		}
-		else {
-			mylines = lines/size;
-		}
-	}
+    lines = 8*interlines + 9 - 2;
+    
+    if ((lines % size) == 0){
+        mylines = lines/size;
+    }   
+    else {
+        /* Der Rest wird auf die letzten Prozesse aufgeteilt */
+        if (myrank >= (size - (lines % size)) ){
+            mylines = lines/size + 1;
+        }
+        else {
+            mylines = lines/size;
+        }
+    }
 
-	return mylines;
+    return mylines;
 }
 
 
@@ -115,13 +115,13 @@ static void initMatrices(int myrank , int size, struct calculation_arguments *ar
     }
     if (options->inf_func == FUNC_F0) {
         for (int g = 0; g < arguments->num_matrices; g++) {
-    	    for (int j = 0; j <= N; j++){
-	        if (myrank == 0){
-		    Matrix[g][0][j] = 1 - (h * j);
-	        }
- 		if (myrank == size -1){
-		    Matrix[g][lines-1][j]= (h * j);
-		}
+            for (int j = 0; j <= N; j++){
+            if (myrank == 0){
+            Matrix[g][0][j] = 1 - (h * j);
+            }
+        if (myrank == size -1){
+            Matrix[g][lines-1][j]= (h * j);
+        }
             }    
         }
     }
@@ -135,11 +135,11 @@ static void initMatrices(int myrank , int size, struct calculation_arguments *ar
     if (options->inf_func == FUNC_F0){
         for (int g = 0; g < arguments->num_matrices; g++) {
              for (int t = 0; t < lines ; t++){
-		 Matrix[g][t][0] = 1 - ((h * t)+(start * h));
-		 Matrix[g][t][N] = ((h * t) + (start*h));
-		//printf("g: %d, i: %d\n", g, t);	
+         Matrix[g][t][0] = 1 - ((h * t)+(start * h));
+         Matrix[g][t][N] = ((h * t) + (start*h));
+        //printf("g: %d, i: %d\n", g, t);   
              }
-	}
+    }
     }
 //printf("end initialize\n");
 }
@@ -158,7 +158,7 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
         double star;                                /* four times center value minus 4 neigh.b values */
         double residuum;                            /* residuum of current iteration */
         double maxresiduum;                         /* maximum residuum value of a slave in iteration */
-	int lines;
+    int lines;
         int const N = arguments->N;
         double const h = arguments->h;
         int start;
@@ -167,7 +167,7 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
 
         int term_iteration = options->term_iteration;
         lines = calculate_lines(myrank,size, options->interlines);
-	test=99;
+    test=99;
         /* initialize m1 and m2 depending on algorithm */
         if (options->method == METH_JACOBI)
         {
@@ -187,9 +187,9 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                 fpisin = 0.25 * TWO_PI_SQUARE * h * h;
         }
 
-	start = 0;
+    start = 0;
         for (int i = 0; i < myrank; i++){
-        	start = start + calculate_lines(i,size, options->interlines);
+            start = start + calculate_lines(i,size, options->interlines);
         }
         while (term_iteration > 0)
         {
@@ -211,7 +211,7 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                 for (i = 1; i <= lines; i++)
                 {
                         double fpisin_i = 0.0;
-			double position = i + (double) start;
+            double position = i + (double) start;
                         if (options->inf_func == FUNC_FPISIN)
                         {// i NEEDS TO BE CHANGED!!!
                                 fpisin_i = fpisin * sin(pih * (double)position);
@@ -237,7 +237,7 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                                 Matrix_Out[i][j] = star;
                         }
                 }
-		
+        
 
                 results->stat_iteration++;
                 results->stat_precision = maxresiduum;
@@ -258,8 +258,8 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                         {
                                 term_iteration = 0;
                         }
-        		MPI_Allreduce(&term_iteration, &test, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-        		term_iteration = test;
+                MPI_Allreduce(&term_iteration, &test, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+                term_iteration = test;
                 }
                 else if (options->termination == TERM_ITER)
                 {
@@ -267,7 +267,7 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                 }
         }
         results->m = m2;
-	//printf("end calculate myrank: %d\n", myrank);
+    //printf("end calculate myrank: %d\n", myrank);
 }
 
 // test
@@ -284,24 +284,25 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
         double star;                                /* four times center value minus 4 neigh.b values */
         double residuum;                            /* residuum of current iteration */
         double maxresiduum;                         /* maximum residuum value of a slave in iteration */
-	int lines;
+    int lines;
         int const N = arguments->N;
         double const h = arguments->h;
         int start;
-	int iteration;
+    int iteration;
         double pih = 0.0;
         double fpisin = 0.0;
-	//MPI_Request request;
-	//MPI_Request request2;
-	MPI_Status status;
+    //MPI_Request request;
+    //MPI_Request request2;
+    MPI_Status status;
         iteration = 0;
+        int a = 0;
 
-	int help;
-	help = 0;
+    int help;
+    help = 0;
 
         int term_iteration = options->term_iteration;
         lines = calculate_lines(myrank,size, options->interlines);
-	test=99;
+    test=99;
         /* initialize m1 and m2 depending on algorithm */
         if (options->method == METH_JACOBI)
         {
@@ -321,62 +322,56 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
                 fpisin = 0.25 * TWO_PI_SQUARE * h * h;
         }
 
-	start = 0;
+    start = 0;
         for (int i = 0; i < myrank; i++){
-        	start = start + calculate_lines(i,size, options->interlines);
+            start = start + calculate_lines(i,size, options->interlines);
         }
-	term_iteration = term_iteration + myrank;
+    term_iteration = term_iteration + myrank;
         while ((term_iteration > 0) && ((help == 0) || (help == 1) ))
         {
                 double** Matrix_Out = arguments->Matrix[m1];
                 double** Matrix_In  = arguments->Matrix[m2];
-		if ((options->termination == TERM_PREC) &&(help == 1)){
-			term_iteration--;
-		}
+        if ((options->termination == TERM_PREC) &&(help == 1)){
+            term_iteration--;
+        }
                 maxresiduum = 0;
 
-		if (myrank < (size-1)){
-			MPI_Send(Matrix_In[lines], N+1, MPI_DOUBLE, myrank +1, myrank, MPI_COMM_WORLD);
-		}
-		if (myrank > 0){
+        if (myrank < (size-1)){
+            MPI_Send(Matrix_In[lines], N+1, MPI_DOUBLE, myrank +1, myrank, MPI_COMM_WORLD);
+        }
+        if (myrank > 0){
                         if (term_iteration > 1){
-				MPI_Recv(Matrix_In[0], N+1, MPI_DOUBLE, myrank-1, myrank-1, MPI_COMM_WORLD, &status);
-				MPI_Send(Matrix_In[1], N+1, MPI_DOUBLE, myrank -1, myrank, MPI_COMM_WORLD);
-	
-			}
-		}
-		if ((myrank < (size-1)) && (term_iteration > 1)){
-			MPI_Recv(Matrix_In[lines+1], N+1, MPI_DOUBLE, myrank+1, myrank +1, MPI_COMM_WORLD, &status);
-		}
+                MPI_Recv(Matrix_In[0], N+1, MPI_DOUBLE, myrank-1, myrank-1, MPI_COMM_WORLD, &status);
+            //    MPI_Send(Matrix_In[1], N+1, MPI_DOUBLE, myrank -1, myrank, MPI_COMM_WORLD);
+    
+            }
+        }
 
+        
+        iteration++;
+        if (myrank < iteration){
 
-		
-/*		
-		if (myrank < (size-1)){ 
-			MPI_Isend(Matrix_In[lines],N+1, MPI_DOUBLE, myrank+1, myrank ,MPI_COMM_WORLD, &request);
-			MPI_Wait(&request, &status);
-			MPI_Irecv(Matrix_In[lines+1], N+1, MPI_DOUBLE, myrank+1, myrank+1, MPI_COMM_WORLD, &request);
-		}
-		
-		if (myrank > 0){
-			MPI_Irecv(Matrix_In[0],  N+1, MPI_DOUBLE, myrank-1, myrank-1, MPI_COMM_WORLD, &request2);
-			MPI_Wait(&request2, &status);
-		}
-		
-*/	        
-		iteration++;
-		if (myrank < iteration){
-		
+        if (myrank < (size-1)){
+            MPI_Send(Matrix_In[lines], N+1, MPI_DOUBLE, myrank +1, myrank, MPI_COMM_WORLD);
+        }
+        if (myrank > 0){
+                        if (term_iteration > 1){
+                MPI_Recv(Matrix_In[0], N+1, MPI_DOUBLE, myrank-1, myrank-1, MPI_COMM_WORLD, &status);
+            //    MPI_Send(Matrix_In[1], N+1, MPI_DOUBLE, myrank -1, myrank, MPI_COMM_WORLD);
+    
+            }
+        }
+        
                 for (i = 1; i <= lines; i++)
                 {
 /*
-			if ((i == 2) && (myrank > 0)){
-				MPI_Isend(Matrix_In[1],N+1, MPI_DOUBLE, myrank-1, myrank ,MPI_COMM_WORLD, &request2);
-				MPI_Wait(&request2, &status);
-			}
+            if ((i == 2) && (myrank > 0)){
+                MPI_Isend(Matrix_In[1],N+1, MPI_DOUBLE, myrank-1, myrank ,MPI_COMM_WORLD, &request2);
+                MPI_Wait(&request2, &status);
+            }
 */
                         double fpisin_i = 0.0;
-			double position = i + (double) start;
+            double position = i + (double) start;
                         if (options->inf_func == FUNC_FPISIN)
                         {
                                 fpisin_i = fpisin * sin(pih * (double)position);
@@ -401,12 +396,26 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
 
                                 Matrix_Out[i][j] = star;
                         }
-/*				if ((i == (lines-1)) && (myrank < (size-1))){
-					MPI_Wait(&request, &status);
-				}
-*/
+/*              if ((i == (lines-1)) && (myrank < (size-1))){
+                    MPI_Wait(&request, &status);
                 }
-		}
+*/
+      if ((myrank > 0) && (i==1))
+        {
+           if (term_iteration > 1)
+            {
+            MPI_Send(Matrix_In[1], N+1, MPI_DOUBLE, myrank -1, myrank, MPI_COMM_WORLD);
+            }
+        }
+
+        if ( (myrank < (size-1)) && (i==1) && (myrank+1 < iteration)){
+            MPI_Recv(Matrix_In[lines+1], N+1, MPI_DOUBLE, myrank+1, myrank +1, MPI_COMM_WORLD, &status);
+            a += 1;
+        }
+        
+                }
+        }
+
 
                 results->stat_iteration++;
                 results->stat_precision = maxresiduum;
@@ -426,12 +435,12 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
                         {
                                 term_iteration = 0;
                         }
-        		MPI_Allreduce(&term_iteration, &test, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-        		term_iteration = test; // ist 0 wenn alle Praezision erreicht haben
-			if (term_iteration == 0){
-				help = 1;
-				term_iteration = term_iteration + myrank;
-			}
+                MPI_Allreduce(&term_iteration, &test, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+                term_iteration = test; // ist 0 wenn alle Praezision erreicht haben
+            if (term_iteration == 0){
+                help = 1;
+                term_iteration = term_iteration + myrank;
+            }
                 }
                 else if (options->termination == TERM_ITER)
                 {
@@ -439,7 +448,8 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
                 }
         }
         results->m = m2;
-	//printf("end calculate myrank: %d\n", myrank);
+    //printf("end calculate myrank: %d\n", myrank);
+        printf("empfangen: %d und rank: %d und iteration: %d\n", a, myrank, iteration);
 }
 
 
@@ -584,7 +594,7 @@ main(int argc, char** argv)
     gettimeofday(&start_time, NULL);
 
     if (options.method == METH_JACOBI){
-    	calculate(myrank, size, &arguments, &results, &options);
+        calculate(myrank, size, &arguments, &results, &options);
     }
     else {
         calculate_gs(myrank, size, &arguments, &results, &options);
@@ -593,16 +603,16 @@ main(int argc, char** argv)
     gettimeofday(&comp_time, NULL);
     
     if (myrank == 0){
-	displayStatistics(&arguments, &results, &options);
+    displayStatistics(&arguments, &results, &options);
     }
 
     for (int i = 0; i < myrank; i++){
-	from = from + calculate_lines(i,size, options.interlines);
+    from = from + calculate_lines(i,size, options.interlines);
     }
     from = from + 1;
 
    for (int i = 0; i <= myrank; i++){
-	to = to + calculate_lines(i, size, options.interlines);
+    to = to + calculate_lines(i, size, options.interlines);
     }
   
     DisplayMatrix(&arguments, &results, &options, myrank, size, from, to);
