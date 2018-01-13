@@ -6,23 +6,21 @@ CFLAGS = -std=c11 -pedantic -Wall -Wextra -Ofast
 LFLAGS = $(CFLAGS)
 LIBS   = -lm
 
-OBJS = partdiff-mpi.o askparams.o 
+OBJS = partdiff-par.o askparams.o 
 
 # Rule to create *.o from *.c
 .c.o:
 	$(CC) -c $(CFLAGS) $*.c
 
 # Targets ...
-all: partdiff-mpi
+all: partdiff-par
 
-partdiff-mpi: $(OBJS) Makefile
+partdiff-par: $(OBJS) Makefile
 	$(CC) $(LFLAGS) -o $@ $(OBJS) $(LIBS)
 
 clean:
-	$(RM) *.o *~ partdiff-mpi
+	$(RM) *.o *~
 
-partdiff-mpi.o: partdiff-mpi.c Makefile
+partdiff-par.o: partdiff-par.c Makefile
 
 askparams.o: askparams.c Makefile
-
-

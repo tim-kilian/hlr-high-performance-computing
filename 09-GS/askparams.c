@@ -72,7 +72,7 @@
 /**         Abbruchbedingung eingelesen.                                   **/
 /****************************************************************************/
 
-#include "partdiff-mpi.h"
+#include "partdiff-par.h"
 #include <string.h>
 
 void AskParams( struct options* options, int argc, char** argv )
