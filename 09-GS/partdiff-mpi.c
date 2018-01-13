@@ -336,16 +336,6 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
         }
                 maxresiduum = 0;
 
-        if (myrank < (size-1)){
-            MPI_Send(Matrix_In[lines], N+1, MPI_DOUBLE, myrank +1, myrank, MPI_COMM_WORLD);
-        }
-        if (myrank > 0){
-                        if (term_iteration > 1){
-                MPI_Recv(Matrix_In[0], N+1, MPI_DOUBLE, myrank-1, myrank-1, MPI_COMM_WORLD, &status);
-            //    MPI_Send(Matrix_In[1], N+1, MPI_DOUBLE, myrank -1, myrank, MPI_COMM_WORLD);
-    
-            }
-        }
 
         
         iteration++;
@@ -449,8 +439,6 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
                 }
         }
         results->m = m2;
-    //printf("end calculate myrank: %d\n", myrank);
-        printf("empfangen: %d und rank: %d und iteration: %d\n", a, myrank, iteration);
 }
 
 
