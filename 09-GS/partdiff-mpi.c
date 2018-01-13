@@ -279,7 +279,8 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
         double star;                                /* four times center value minus 4 neigh.b values */
         double residuum;                            /* residuum of current iteration */
         double maxresiduum;                         /* maximum residuum value of a slave in iteration */
-    int lines;
+        double max_help;
+	int lines;
         int const N = arguments->N;
         double const h = arguments->h;
         int start;
@@ -292,7 +293,7 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
 
     int help;
     help = 0;
-
+    max_help = 100;
         int term_iteration = options->term_iteration;
         lines = calculate_lines(myrank,size, options->interlines);
     test=99;
@@ -406,8 +407,9 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
                         {
                                 term_iteration = 0;
                         }
+		max_help=maxresiduum;
                 MPI_Allreduce(&term_iteration, &test, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
-                MPI_Allreduce(&maxresiduum, &maxresiduum, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
+                MPI_Allreduce(&max_help, &maxresiduum, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
                 term_iteration = test; // ist 0 wenn alle Praezision erreicht haben
             if (term_iteration == 0){
                 help = 1;
