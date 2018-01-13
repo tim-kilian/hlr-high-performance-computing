@@ -327,7 +327,7 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
             start = start + calculate_lines(i,size, options->interlines);
         }
     term_iteration = term_iteration + myrank;
-        while ((term_iteration > 0) && ((help == 0) || (help == 1) ))
+        while (term_iteration > 0)
         {
                 double** Matrix_Out = arguments->Matrix[m1];
                 double** Matrix_In  = arguments->Matrix[m2];
