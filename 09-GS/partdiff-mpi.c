@@ -111,7 +111,6 @@ static void initMatrices(int myrank , int size, struct calculation_arguments *ar
                 Matrix[g][i][j] = 0;
             }
         }
-        //printf("%d\n",g);
     }
     if (options->inf_func == FUNC_F0) {
         for (int g = 0; g < arguments->num_matrices; g++) {
@@ -125,7 +124,7 @@ static void initMatrices(int myrank , int size, struct calculation_arguments *ar
             }    
         }
     }
-    // Fehler ab hier
+
     start = 0;
     for (int i = 0; i < myrank; i++){
         start = start + calculate_lines(i,size, options->interlines);
@@ -136,12 +135,10 @@ static void initMatrices(int myrank , int size, struct calculation_arguments *ar
         for (int g = 0; g < arguments->num_matrices; g++) {
              for (int t = 0; t < lines ; t++){
          Matrix[g][t][0] = 1 - ((h * t)+(start * h));
-         Matrix[g][t][N] = ((h * t) + (start*h));
-        //printf("g: %d, i: %d\n", g, t);   
+         Matrix[g][t][N] = ((h * t) + (start*h));   
              }
     }
     }
-//printf("end initialize\n");
 }
 
 
@@ -211,9 +208,9 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                 for (i = 1; i <= lines; i++)
                 {
                         double fpisin_i = 0.0;
-            double position = i + (double) start;
+            		double position = i + (double) start;
                         if (options->inf_func == FUNC_FPISIN)
-                        {// i NEEDS TO BE CHANGED!!!
+                        {
                                 fpisin_i = fpisin * sin(pih * (double)position);
                         }
 
@@ -267,10 +264,8 @@ calculate (int myrank, int size, struct calculation_arguments const* arguments, 
                 }
         }
         results->m = m2;
-    //printf("end calculate myrank: %d\n", myrank);
 }
 
-// test
 /* ************************************************************************ */
 /* calculate: solves the equation                                           */
 /* ************************************************************************ */
@@ -291,8 +286,6 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
     int iteration;
         double pih = 0.0;
         double fpisin = 0.0;
-    //MPI_Request request;
-    //MPI_Request request2;
     MPI_Status status;
         iteration = 0;
         int a = 0;
@@ -342,8 +335,6 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
         if (myrank > 0){
                         if (term_iteration > 1){
                 MPI_Recv(Matrix_In[0], N+1, MPI_DOUBLE, myrank-1, myrank-1, MPI_COMM_WORLD, &status);
-            //    MPI_Send(Matrix_In[1], N+1, MPI_DOUBLE, myrank -1, myrank, MPI_COMM_WORLD);
-
             }
         }
 
@@ -351,27 +342,10 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
         iteration++;
         if (myrank < iteration){
 
-/*        if (myrank < (size-1)){
-            MPI_Send(Matrix_In[lines], N+1, MPI_DOUBLE, myrank +1, myrank, MPI_COMM_WORLD);
-        }
-        if (myrank > 0){
-                        if (term_iteration > 1){
-                MPI_Recv(Matrix_In[0], N+1, MPI_DOUBLE, myrank-1, myrank-1, MPI_COMM_WORLD, &status);
-            //    MPI_Send(Matrix_In[1], N+1, MPI_DOUBLE, myrank -1, myrank, MPI_COMM_WORLD);
-    
-            }
-        }
-*/        
                 for (i = 1; i <= lines; i++)
                 {
-/*
-            if ((i == 2) && (myrank > 0)){
-                MPI_Isend(Matrix_In[1],N+1, MPI_DOUBLE, myrank-1, myrank ,MPI_COMM_WORLD, &request2);
-                MPI_Wait(&request2, &status);
-            }
-*/
                         double fpisin_i = 0.0;
-            double position = i + (double) start;
+            		double position = i + (double) start;
                         if (options->inf_func == FUNC_FPISIN)
                         {
                                 fpisin_i = fpisin * sin(pih * (double)position);
@@ -396,10 +370,7 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
 
                                 Matrix_Out[i][j] = star;
                         }
-/*              if ((i == (lines-1)) && (myrank < (size-1))){
-                    MPI_Wait(&request, &status);
-                }
-*/
+
       if ((myrank > 0) && (i==1))
         {
            if (term_iteration > 1)
@@ -580,11 +551,11 @@ int
 main(int argc, char** argv)
 {
     MPI_Init( &argc, &argv );
-    int myrank, size, from, to;
+    int myrank, size, from, to, cancel;
     struct options options;
     struct calculation_arguments arguments;
     struct calculation_results results;
-    
+    cancel = 0;
     from = 0;
     to = 0;
     // get parameters
@@ -604,6 +575,14 @@ main(int argc, char** argv)
         calculate(myrank, size, &arguments, &results, &options);
     }
     else {
+	    for (int i = 0; i < size; i++){
+    			cancel = calculate_lines(i,size, options.interlines);
+			if (cancel == 1){
+				if (myrank == 0) {printf("For this Gauss-Seidel implementation each Process needs at least 2 lines for calculations.\n");}
+				exit(0);
+			}
+    		}
+
         calculate_gs(myrank, size, &arguments, &results, &options);
     }
 
