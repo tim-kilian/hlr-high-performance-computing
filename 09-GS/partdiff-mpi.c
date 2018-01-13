@@ -436,6 +436,7 @@ calculate_gs (int myrank, int size, struct calculation_arguments const* argument
                                 term_iteration = 0;
                         }
                 MPI_Allreduce(&term_iteration, &test, 1, MPI_INT, MPI_MAX, MPI_COMM_WORLD);
+                MPI_Allreduce(&maxresiduum, &maxresiduum, 1, MPI_DOUBLE, MPI_MAX, MPI_COMM_WORLD);
                 term_iteration = test; // ist 0 wenn alle Praezision erreicht haben
             if (term_iteration == 0){
                 help = 1;
