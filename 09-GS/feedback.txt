@@ -2,12 +2,12 @@ Die Bearbeitungszeit bitte in ganzen Stunden angeben (aufrunden).
 In den restlichen Zeilen jeweils ein X in der zutreffenden Spalte setzen.
 
 Bearbeitungszeit:  
-Schwierigkeit:     [ ] zu leicht         [ ] genau richtig     [ ] zu schwer
-Lehrreich:         [ ] wenig             [ ] etwas             [ ] sehr
-Verständlichkeit:  [ ] großteils unklar  [ ] teilweise unklar  [ ] verständlich
+Schwierigkeit:     [ ] zu leicht         [x] genau richtig     [ ] zu schwer
+Lehrreich:         [ ] wenig             [ ] etwas             [x] sehr
+Verständlichkeit:  [ ] großteils unklar  [ ] teilweise unklar  [x] verständlich
 
-Kommentar:
-Zeitaufwand zu groß? Wo sind Sie nicht weiter gekommen?
-Was war zu schwer oder unverständlich?
-Was könnten wir verbessern?
-Was hat Ihnen besonders gut gefallen?
+Kommentar: Diese Aufgabe war sehr lehrreich, vorallem für die reine Anwendung einer MPI-Implementierung. Dafür war der große Zeitaufwand gerechtfertigt. Und auch das Abschicken und besprechen des Entwurfes letzte Woche hat gut geholfen. Das darf gerne für weitere Semester beibehalten werden.
+Zeitaufwand zu groß? Wo sind Sie nicht weiter gekommen? Zeitaufwand war schon groß. Gerade die Fehlersuche dauerte schon lange, aber durch die Entfwurfsbesprechung haben sich Kleinigkeiten auch nochmals geklärt.
+Was war zu schwer oder unverständlich? Hat man Gauß-Seidel einmal verstanden, gab es keine Probleme bei der Verständlichkeit mehr. Die Aufgabenstellung war klar und deutlich.
+Was könnten wir verbessern? 
+Was hat Ihnen besonders gut gefallen? Wurde hier schon öfters angesprochen :)
