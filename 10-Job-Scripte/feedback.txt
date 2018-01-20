@@ -2,12 +2,23 @@ Die Bearbeitungszeit bitte in ganzen Stunden angeben (aufrunden).
 In den restlichen Zeilen jeweils ein X in der zutreffenden Spalte setzen.
 
 Bearbeitungszeit:  
-Schwierigkeit:     [ ] zu leicht         [ ] genau richtig     [ ] zu schwer
-Lehrreich:         [ ] wenig             [ ] etwas             [ ] sehr
-Verständlichkeit:  [ ] großteils unklar  [ ] teilweise unklar  [ ] verständlich
+Schwierigkeit:     [ ] zu leicht         [X] genau richtig     [ ] zu schwer
+Lehrreich:         [X] wenig             [ ] etwas             [ ] sehr
+Verständlichkeit:  [ ] großteils unklar  [X] teilweise unklar  [ ] verständlich
 
 Kommentar:
 Zeitaufwand zu groß? Wo sind Sie nicht weiter gekommen?
+
+Zu groß, weniger Testdaten wären lehrreicher.
+
 Was war zu schwer oder unverständlich?
+
+Referenzdaten wären nicht schlecht, man weiß sonst nicht ob das Programm richtig ist.
+
 Was könnten wir verbessern?
+
+Weniger Rechenzeit voraussetzen. Ein funktionierendes partdiff-par mitliefern.
+
 Was hat Ihnen besonders gut gefallen?
+
+Nichts.
