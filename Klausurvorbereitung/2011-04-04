@@ -1,0 +1,49 @@
+HLR Pruefung Wintersemester 2011
+Pruefer: Herr Ludwig
+
+Themen:
+
+Speicherarchitekturen
+----------------------
+Hier sollten die Architekturen des verteilten und des gemeinsamen Speicher aufgemalt werden.
+Desweiteren wurde nach konkreten Verbindungsnetzbeispielen fuer die Architektur des
+verteilten Speicher gefragt(2dim Torus, Hypercube). Es wurde gefragt, wie man
+das Jacobi(Gauss-Seidel) Verfahren aus der Uebung auf den 2dim Torus abbilden kann.
+Ich habe dort gesagt, dass ich versuchen wuerde die Prozesse, die benachbarte Bloecke berechnen, auch benachbart zu platzieren,
+da sonst die Kommunikation zu lang dauert. Er wollte dann auf den Vorteil meiner Abbildung hinaus, ich
+meinte Latenzminimierung aber er wollte auf etwas anderes hinaus: Auf Kollisionsvermeidung.
+
+Parallele Dateisysteme
+----------------------
+Es wurde nach der Funktionsweise von parallelen Dateisystemen gefragt. Ich habe dort einfach ein Netzwerk mit
+verschiedenen Rechnern, einem Verbindungsnetz, einem Fileserver und Platten an dem Fileserver gemalt und
+erklaert, dass der Server Parallelismus herstellen muss. Der Vorteil vom Parallelismus ist natuerlich
+die effizientere Abarbeitung im Gegensatz zu einem seriellen Dateisystem.
+Danach kam die Frage, wie denn eine 3GB-Datei gespeichert wuerde. Ich erklaerte, dass die Datei auf die
+verschiedenen Platten verteilt(gestripet) wird, um Parallelismus herzustellen.
+
+
+OpenMP
+------
+Ich sollte erklaeren, was OpenMP ist. Dabei habe ich die Funktionsweise(Compiler-Direktiven statt direkte Codemanipulation) und
+Vorzuege von OpenMP(z.B. inkrementelle Parallelisierung) erklaert.
+Danach sollte ich eine Schleife, die 1000 mal durchlaufen wird anhand von OpenMP parallelisieren.
+
+#pragma omp parallel do
+for(int i=1; i <= 1000; i++)
+{
+ x[i] = y[i] + z;
+}
+
+Hierbei habe ich dann die Sichtbarkeit der Variablen erklaert.
+Danach wurde gefragt, wie man denn am Ende die Summe aller x[i]'s erhaelt. Es wurde nach zwei Varianten gefragt.
+Die erste Variante ist, eine neue Variable mit der Sichtbarkeit reduction einzufuehren, auf die jeder Thread
+dann die x[i]'s hinaufaddiert. Am Ende wird diese Variable dann zusammenaddiert, und dem Laufzeitsystem
+sichtbar gemacht. Die zweite Variante ist es, eine shared Variable in einem kritischen Abschnitt zu verwenden.
+
+
+Meta
+----
+Die Pruefungsatmosphaere war recht angenehm. Herr Ludwig redet selbst sehr viel (ich schaetze 1/2 der Pruefung hat er geredet) und
+erzeugt so eine angenehme Diskussionsatmosphaere. Er fragt eher wenig Themen, und geht da dann aber
+sehr ins Detail. Mit der Note am Ende war ich sehr zufrieden.

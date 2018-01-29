@@ -1,0 +1,64 @@
+
+Top500
+
+    Wie heisst das Benchmark-Tool, was tut es?
+    Welche Dinge erfasst das nicht (2 Beispiele, mit Begründung)?
+    Größenordnung Anzahl Prozessoren
+    Größenordnung Leistung
+
+Architektur
+
+    Welche 2 Speicherarchitekturen gibt es? --> Gemeinsamer/Verteilter Speicher
+        Schema zeichnen
+        Vor-/Nachteile aufzeigen
+        Welches Programmierparadigma passt auf welches Konzept?
+
+MPI
+
+    Wie heißen die Punkt-zu-Punkt Operationen und was tun die Parameter?
+    Was heißt nicht-blockierende Kommunikation?
+    Was bedeutet MPI_ANY_SOURCE und wozu nutzt man es? --> Beispiel
+    Wozu sind kollektive Operationen da und was tun sie?
+
+Vernetzung
+
+    Welche zwei Messgrößen gibt es?
+    Nenne ein im HPC benutztes Netz und entsprechende Größen.
+    Nenne 2 Topologien.
+    Zeichne eine davon.
+    Was sind die Probleme wenn man Buffer kopiert, was heißt Zero-Copy?
+
+Pthreads
+
+    Code, Threading-Anweisungen einfügen (nach jeder Zeile war eine frei)
+
+   while(not_finished) {
+       for(i = 0; i < n; ++i) {
+           compute(m, i);
+       }
+   }
+
+    Nenne zwei Methoden zur Synchronisation von Threads
+    Was kann passieren wenn man nicht synchronisiert?
+
+Parallel IO
+
+    Male ein Diagramm..
+    Daten: 22 MB, 8/8/6, 2x IO, 2M Stripsize
+    Zeichne ein: Client-Prozesse, Datenvektor, Verbindungsnetz, Server-Prozesse, Dateien im parallelen Dateisystem
+
+Speedup/Effizienz
+
+    Definitionen
+    Amdahl's Law, Definition, auch herleiten
+    Graph malen mit Achsen, Einheiten, Größen
+        typisches numerisches Programm
+        linear
+        superlinear
+    Was heißt superlinear und was kann eine Ursache sein?
+
+Fehlertoleranz
+
+    Was heißt Dynamische/Statische Redundanz?
+    Erkläre Triple-Modular-Redundancy
+

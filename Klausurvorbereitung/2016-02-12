@@ -1,0 +1,51 @@
+
+
+HLR Gedächtnisprotokoll
+
+- 2-dimensionaler Torus (zeichnen, Vorteile, Nachteile, maximaler Pfad bei verdoppeln der Knotenzahl)
+
+- Was ist der Unterschied zwischen synchroner und asynchroner Kommunikation? (Vorteile, Nachteile)
+
+- Übertragen einer Nachricht von einem Prozess auf einem Knoten zu einem Prozess auf einem anderen Knoten (zeichen (Betriebssystem, Hardwarekomponenten, Prozesse, Verbindungsnetz))
+- Wo sind Leistungsengpässe, was kann man verbessern?
+
+- gemeinsamer Speicher/ verteilter Speicher (zeichnen, Vorteile, Nachteile, Programmierparadima)
+
+MPI Programm
+MPI_comm_size( ..., &size);
+MPI_comm_rank(..., &rank);
+
+left = (size + rank - 1) % size;
+right = (rank + 1) % size
+
+MPI_Send(..., right, ..)
+MPI_Recv(..., left,..)
+
+- Schema aufzeichnen, wo liegt das Problem (beachte, dass das Programm mit unterschiedlichen Datenmengen aufgerufen werden kann), was kann verbessert werden?
+
+- Paramenter für Recieve und Send
+
+- Wie würde man sich ein Reduce basteln?
+
+- Wie verhält es sich mit Eindeutigkeit bei Reduce (unterscheide logische/arithmetische Operationen)?
+
+- Wenn die MPI-Implementation keine Vorkehrungen trifft, was muss das Netzwerkprotokoll dann leisten?
+
+- zeichne ein paralleles Dateisystem (auch Zuordnung der Daten zu den Prozessen und Lage Speicher)
+
+- Nenne zwei Batch Queueing Systeme?
+- Nenne vier Parameter für sbatch
+- Nenne zwei Scheduling-Verfahren?
+- Prozesse werden exklusiv einem Knoten/Kern? zugeordnet, was ist das Problem der Strategie?
+
+- Parallele Programm mit OpenMP
+    -> for-Schleife in einer While-Schleife parallelisieren
+    (siehe 2014)
+
+- Nenne zwei Vorteile und Nachteile von OpenMP gegenüber POSIX-Threads
+
+Programmdaten gegeben (Anzahl der Prozesse, Programmlaufzeit, Lineare Laufzeit)
+
+- Zeichne ein Speedupdiagramm, trage linearen Speedup ein und Begründungen für die Abschnitte des Speedupgraphen des tatsächlichen Speedups.
+
+- Warum ist es nicht günstig Leistungsmessung anhand der Laufzeit eines Programms zu machen, nenne eine Alternative.

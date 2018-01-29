@@ -1,0 +1,55 @@
+Ged√§chtnisprotokoll Hochleistungsrechnen
+Pr√ºfer: Dr. Thomas Ludwig
+Beisitzer / Protokollant: Julian Kunkel
+Datum: 4.3.2010
+
+Welche Charakterisierung hat Flynn f√ºr Parallelrechner getroffen?
+* SISD, SIMD, MISD, MIMD erl√§utert und Beispiele gegeben (MISD leer)
+* zus√§tzlich heutzutage: MIMD aufgeteilt in verteilten und gemeinsamen Speicher
+
+Wie sieht das denn bei verteiltem Speicher so aus?
+* da sollte ich malen (Knoten mit CPU und Speicher, Knoten mit Verbindungsnetz verbunden
+
+Und wenn heutzutage im Knoten schon mehrere Prozessorkerne sind?
+* Das habe ich dann Mischform genannt und am gemalten Bild gezeigt, wie das etwa aussehen w√ºrde
+
+Wie sieht denn das Verbindungsnetz bei verteiltem Speicher aus (aus technischer Sicht)?
+* Da habe ich ich erst Kreuzschienenverteiler erw√§hnt, da hat er mich unterbrochen und mich dran erinnert, dass das bei gemeinsamem Speicher ist
+* Hab kurz rumgestammelt und dann angefangen den Donut (Torus) und vor allem den n-dimensionalen W√ºrfel (Hypercube) zu erz√§hlen und gesagt, dass der gut ist wegen doppelter Knotenmenge->maximaler Pfad nur +1 gr√∂√üer
+
+Wie sieht das denn mit der Wegefindung aus im Hypercube?
+* habe gesagt, dass das ja eigentlich nur ein Graph ist und ich da aus der Graphentheorie einen Algorithmus f√ºr minimale Pfade nehmen w√ºrde
+* da hat er mich darauf hingewiesen, dass man jeden Knoten auch mit 0/1-Koordinaten durchnummerieren kann und daher jeder Knoten bei gegebenem Ziel sofort wei√ü, in welche Richtung er das weiterleiten muss. Die Wegefindung kann also (deterministisch!) auf Bitebene implementiert werden, statt komplexe Algorithmen zu implementieren
+
+Bei verteiltem Speicher programmieren wir ja mit Nachrichtenaustausch, also MPI o.√§., wie sieht das denn bei gemeinsamem Speicher aus?
+* Threads erw√§hnt, nach Zwischenfrage habe ich dann erz√§hlt, was das im Gegensatz zu Prozessen ist und dass die leichtgewichtiger sind
+
+Beisitzer: Du hast "Ressourcen" erw√§hnt, was ist das eigentlich?
+* habe ein bisschen was erz√§hlt von Speicher und so, der Begriff bei dem beide pl√∂tzlich genickt haben war wohl "Netzwerk-Sockets".
+
+Was ist OpenMP, wie funktioniert das?
+* erkl√§rt, dass Compiler parallelisiert durch Direktiven
+
+K√∂nnen Sie mal ein Beispiel geben, zum Beispiel eine Schleife die 1000 mal durchl√§uft?
+* #pragma omp parallel do
+for (int i=0; i<1000; ++i) {
+a[i] = b[i] + x;
+}
+#pragma parallel end
+* Dann noch dar√ºber geredet, wie der Compiler das aufteilt und was mit den Variablen passiert (i private, a und b shared, x je nach Kontext, aber wohl auch shared)
+* auf Nachfrage auch gesagt, was reduction-Variablen sind
+
+Was macht der Compiler noch? (sein Tipp: irgendwas muss mit dem Bin√§rcode noch passieren)
+* OpenMP-Bibliothek zu-binden
+
+Was bietet die Bibliothek?
+* zum Beispiel schedule(...)
+* auf Nachfragen noch das schedule erkl√§rt
+* sein Beispiel: Aufwand vor n Aufgaben w√§chst exponentiell an, was f√ºr Scheduling w√ºrde man machen?
+* ich habe gesagt, dass gleichverteilt wohl doof w√§re und man deshalb type=guided mit einem chunk als gegebener Grenze w√§hlt.
+
+Irgendwo da sagte er dann, dass er eigentlich fertig sei. Beisitzer meinte aber, ein bisschen Zeit sei noch und er h√§tte sonst noch Fragen. Obwohl das eigentlich nicht pr√ºfungsrelevant war, haben wir uns dann noch ein wenig √ºber Grafikkartenprogrammierung unterhalten. Wusste nur noch ein bisschen aus der Vorlesung (viele Vektor-Prozessoren, SIMD) und habe mir ein wenig was aus den Fingern gesogen. War wohl ok und waren eh "Bonusfragen".
+
+Insgesamt war die Pr√ºfungsstimmung locker und angenehm. Allgemein scheint Herr Ludwig oft mit allgemeinen Fragen zu starten und dann nach und nach spezieller zu werden. Dass er irgendwann Punkte entdeckt, die man dann nicht mehr im Detail wei√ü weil es nicht in den Folien war oder einfach Zusatzwissen ist, ist dann wohl nicht negativ. Er f√§ngt dann auch selbst noch an, dar√ºber zu erz√§hlen. Bei anderen Pr√ºfern ist das oft negativ, weil man das ja selbst als Pr√ºfling h√§tte erz√§hlen k√∂nnen. Bei Herrn Ludwig ist das glaube ich nicht so. Aber das ist nat√ºrlich nur mein Eindruck und ohne Gew√§hr.
+
+Das Endergebnis war f√ºr mich sehr zufriedenstellend.
